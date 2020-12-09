@@ -47,11 +47,20 @@ ebuild_safe_source()
     trap DEBUG
     set -T
     shopt -s extdebug
-    trap "[[ \${BASH_COMMAND%%=*} == ?(*[[:space:]])!($(IFS='|'; [[ ${1} == --rewrite-for-declare ]] && shift; shift; echo "${*}")) ||
+    trap "varname=\"\${BASH_COMMAND%%=*}\";
+          [[ \${varname%%[[:space:]]*} == 'declare' ]] && {
+              \$(: 'Skip over \"declare\" and options');
+              varname=\"\${varname##*[[:space:]]}\";
+          };
+          [[ \${varname%%=*} == ?(*[[:space:]])!($(IFS='|'; [[ ${1} == --rewrite-for-declare ]] && shift; shift; echo "${*}")) ||
               \${BASH_COMMAND%%[[:space:]]*} != @(*=*|export|declare) ]]" DEBUG
 
     if [[ ${1} == --rewrite-for-declare ]]; then
-        ( source "${2}" && set >"${2}" && print_exports >>"${2}" ) && source "${2}"
+        ( source "${2}" && \
+          declare -p | sed -e '/^declare -[^-]\+ / s/^declare -/declare -g/' \
+                           -e '/^declare -- / s/^declare --/declare -g/' >"${2}" && \
+          declare -f >>"${2}" &&
+          print_exports >>"${2}" ) && source "${2}"
     else
         source "${1}"
     fi

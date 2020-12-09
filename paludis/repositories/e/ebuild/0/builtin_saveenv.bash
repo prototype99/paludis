@@ -20,7 +20,9 @@ builtin_saveenv()
 {
     [[ -d "${PALUDIS_LOADSAVEENV_DIR}" ]] || die "\$PALUDIS_LOADSAVEENV_DIR (\"${PALUDIS_LOADSAVEENV_DIR}\") not a directory"
     [[ -f "${PALUDIS_LOADSAVEENV_DIR}/loadsaveenv" ]] && rm -f "${PALUDIS_LOADSAVEENV_DIR}/loadsaveenv"
-    ( set ; print_exports ) > ${PALUDIS_LOADSAVEENV_DIR}/loadsaveenv
+    { declare -p | sed -e '/^declare -[^-]\+ / s/^declare -/declare -g/' \
+                       -e '/^declare -- / s/^declare --/declare -g/' ; \
+      declare -f ; print_exports ; } > "${PALUDIS_LOADSAVEENV_DIR}/loadsaveenv"
 }
 
 ebuild_f_saveenv()
