@@ -1085,6 +1085,7 @@ namespace
          * A FetchableURIDepSpec represents a fetchable URI spec.
          */
         c_fetchable_uri_dep_spec = rb_define_class_under(paludis_module(), "FetchableURIDepSpec", c_string_dep_spec);
+        rb_undef_alloc_func(c_fetchable_uri_dep_spec);
         rb_funcall(c_fetchable_uri_dep_spec, rb_intern("private_class_method"), 1, rb_str_new2("new"));
         VALUE (* fetchable_uri_dep_spec_to_s) (VALUE) = &dep_spec_to_s<FetchableURIDepSpec>;
         rb_define_method(c_fetchable_uri_dep_spec, "to_s", RUBY_FUNC_CAST(fetchable_uri_dep_spec_to_s), 0);
@@ -1101,6 +1102,7 @@ namespace
          * A SimpleURIDepSpec represents a simple URI spec.
          */
         c_simple_uri_dep_spec = rb_define_class_under(paludis_module(), "SimpleURIDepSpec", c_string_dep_spec);
+        rb_undef_alloc_func(c_simple_uri_dep_spec);
         rb_funcall(c_simple_uri_dep_spec, rb_intern("private_class_method"), 1, rb_str_new2("new"));
         VALUE (* simple_uri_dep_spec_to_s) (VALUE) = &dep_spec_to_s<SimpleURIDepSpec>;
         rb_define_method(c_simple_uri_dep_spec, "to_s", RUBY_FUNC_CAST(simple_uri_dep_spec_to_s), 0);
@@ -1111,6 +1113,7 @@ namespace
          * A LicenseDepSpec represents a license dep spec.
          */
         c_license_dep_spec = rb_define_class_under(paludis_module(), "LicenseDepSpec", c_string_dep_spec);
+        rb_undef_alloc_func(c_license_dep_spec);
         rb_funcall(c_license_dep_spec, rb_intern("private_class_method"), 1, rb_str_new2("new"));
         VALUE (* license_dep_spec_to_s) (VALUE) = &dep_spec_to_s<LicenseDepSpec>;
         rb_define_method(c_license_dep_spec, "to_s", RUBY_FUNC_CAST(license_dep_spec_to_s), 0);

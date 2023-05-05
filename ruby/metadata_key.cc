@@ -648,6 +648,7 @@ namespace
          * Metadata class for file sizes.
          */
         c_metadata_size_key = rb_define_class_under(paludis_module(), "MetadataSizeKey", c_metadata_key);
+        rb_undef_alloc_func(c_metadata_size_key);
         rb_define_method(c_metadata_size_key, "parse_value", RUBY_FUNC_CAST(&metadata_size_key_value), 0);
 
         /*
@@ -700,6 +701,7 @@ namespace
          * Metadata class for filesystem sequences.
          */
         c_metadata_fsentry_sequence_key = rb_define_class_under(paludis_module(), "MetadataFSPathSequenceKey", c_metadata_key);
+        rb_undef_alloc_func(c_metadata_fsentry_sequence_key);
         rb_define_method(c_metadata_fsentry_sequence_key, "parse_value", RUBY_FUNC_CAST((&SetValue<Maintainers>::fetch)), 0);
 
         /*
@@ -734,6 +736,7 @@ namespace
          * Metadata class for String sequences.
          */
         c_metadata_string_sequence_key = rb_define_class_under(paludis_module(), "MetadataStringSequenceKey", c_metadata_key);
+        rb_undef_alloc_func(c_metadata_string_sequence_key);
         rb_define_method(c_metadata_string_sequence_key, "parse_value", RUBY_FUNC_CAST((&SetValue<Sequence<std::string> >::fetch)), 0);
 
         /*
@@ -798,6 +801,7 @@ namespace
          * MetadataKey instances.
          */
         c_metadata_section_key = rb_define_class_under(paludis_module(), "MetadataSectionKey", c_metadata_key);
+        rb_undef_alloc_func(c_metadata_section_key);
         rb_define_method(c_metadata_section_key, "each_metadata", RUBY_FUNC_CAST(&metadata_section_key_each_metadata), 0);
         rb_define_method(c_metadata_section_key, "[]", RUBY_FUNC_CAST(&metadata_section_key_subscript), 1);
 
