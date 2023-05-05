@@ -226,11 +226,17 @@ namespace
         rb_define_method(c_uri_label, "to_s", RUBY_FUNC_CAST(&uri_label_text), 0);
 
         c_uri_mirrors_then_listed_label = rb_define_class_under(paludis_module(), "URIMirrorsThenListedLabel", c_uri_label);
+        rb_undef_alloc_func(c_uri_mirrors_then_listed_label);
         c_uri_mirrors_only_label = rb_define_class_under(paludis_module(), "URIMirrorsOnlyLabel", c_uri_label);
+        rb_undef_alloc_func(c_uri_mirrors_only_label);
         c_uri_listed_only_label = rb_define_class_under(paludis_module(), "URIListedOnlyLabel", c_uri_label);
+        rb_undef_alloc_func(c_uri_listed_only_label);
         c_uri_listed_then_mirrors_label = rb_define_class_under(paludis_module(), "URIListedThenMirrorsLabel", c_uri_label);
+        rb_undef_alloc_func(c_uri_listed_then_mirrors_label);
         c_uri_local_mirrors_only_label = rb_define_class_under(paludis_module(), "URILocalMirrorsOnlyLabel", c_uri_label);
+        rb_undef_alloc_func(c_uri_local_mirrors_only_label);
         c_uri_manual_only_label = rb_define_class_under(paludis_module(), "URIManualOnlyLabel", c_uri_label);
+        rb_undef_alloc_func(c_uri_manual_only_label);
 
         /*
          * Document-class: Paludis::DependenciesLabel
@@ -243,14 +249,23 @@ namespace
         rb_define_method(c_dependencies_label, "to_s", RUBY_FUNC_CAST(&dependencies_label_text), 0);
 
         c_dependencies_build_label = rb_define_class_under(paludis_module(), "DependenciesBuildLabel", c_dependencies_label);
+        rb_undef_alloc_func(c_dependencies_build_label);
         c_dependencies_test_label = rb_define_class_under(paludis_module(), "DependenciesTestLabel", c_dependencies_label);
+        rb_undef_alloc_func(c_dependencies_test_label);
         c_dependencies_run_label = rb_define_class_under(paludis_module(), "DependenciesRunLabel", c_dependencies_label);
+        rb_undef_alloc_func(c_dependencies_run_label);
         c_dependencies_post_label = rb_define_class_under(paludis_module(), "DependenciesPostLabel", c_dependencies_label);
+        rb_undef_alloc_func(c_dependencies_post_label);
         c_dependencies_install_label = rb_define_class_under(paludis_module(), "DependenciesInstallLabel", c_dependencies_label);
+        rb_undef_alloc_func(c_dependencies_install_label);
         c_dependencies_compile_against_label = rb_define_class_under(paludis_module(), "DependenciesCompileAgainstLabel", c_dependencies_label);
+        rb_undef_alloc_func(c_dependencies_compile_against_label);
         c_dependencies_fetch_label = rb_define_class_under(paludis_module(), "DependenciesFetchLabel", c_dependencies_label);
+        rb_undef_alloc_func(c_dependencies_fetch_label);
         c_dependencies_suggestion_label = rb_define_class_under(paludis_module(), "DependenciesSuggestionLabel", c_dependencies_label);
+        rb_undef_alloc_func(c_dependencies_suggestion_label);
         c_dependencies_recommendation_label = rb_define_class_under(paludis_module(), "DependenciesRecommendationLabel", c_dependencies_label);
+        rb_undef_alloc_func(c_dependencies_recommendation_label);
 
     }
 }

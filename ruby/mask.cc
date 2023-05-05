@@ -219,6 +219,7 @@ namespace
          * (for example) a MetadataCollectionKey or MetadataSpecTreeKey is not accepted by user configuration.
          */
         c_unaccepted_mask = rb_define_class_under(paludis_module(), "UnacceptedMask", c_mask);
+        rb_undef_alloc_func(c_unaccepted_mask);
         rb_define_method(c_unaccepted_mask, "unaccepted_key_name",
                 RUBY_FUNC_CAST((&MaskMetadataKey<UnacceptedMask,&UnacceptedMask::unaccepted_key_name>::fetch)), 0);
 
@@ -228,6 +229,7 @@ namespace
          * A RepositoryMask is a Mask that signifies that a PackageID has been marked as masked by a Repository.
          */
         c_repository_mask = rb_define_class_under(paludis_module(), "RepositoryMask", c_mask);
+        rb_undef_alloc_func(c_repository_mask);
         rb_define_method(c_repository_mask, "token",
                 RUBY_FUNC_CAST((&MaskMetadataKey<RepositoryMask,&RepositoryMask::token>::fetch)), 0);
 
@@ -247,6 +249,7 @@ namespace
          * An OverriddenMask holds a Mask and an explanation of why it has been overridden.
          */
         c_overridden_mask = rb_define_class_under(paludis_module(), "OverriddenMask", rb_cObject);
+        rb_undef_alloc_func(c_overridden_mask);
         rb_define_method(c_overridden_mask, "mask", RUBY_FUNC_CAST(&overridden_mask_mask), 0);
         rb_define_method(c_overridden_mask, "override_reason", RUBY_FUNC_CAST(&overridden_mask_override_reason), 0);
 

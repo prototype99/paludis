@@ -281,6 +281,7 @@ namespace
          * Generator for an Environment selection.
          */
         c_generator = rb_define_class_under(c_generator_module, "Generator", rb_cObject);
+        rb_undef_alloc_func(c_generator);
         rb_funcall(c_generator, rb_intern("private_class_method"), 1, rb_str_new2("new"));
         rb_define_method(c_generator, "initialize", RUBY_FUNC_CAST(&generator_init), -1);
         rb_define_method(c_generator, "to_s", RUBY_FUNC_CAST(&Common<Generator>::to_s), 0);
@@ -293,6 +294,7 @@ namespace
          * Generate all packages.
          */
         c_generator_all = rb_define_class_under(c_generator_module, "All", c_generator);
+        rb_undef_alloc_func(c_generator_all);
         rb_define_singleton_method(c_generator_all, "new", RUBY_FUNC_CAST(&generator_all_new), 0);
 
         /*
@@ -301,6 +303,7 @@ namespace
          * Generate matching packages.
          */
         c_generator_matches = rb_define_class_under(c_generator_module, "Matches", c_generator);
+        rb_undef_alloc_func(c_generator_matches);
         rb_define_singleton_method(c_generator_matches, "new", RUBY_FUNC_CAST(&generator_matches_new), 3);
 
         /*
@@ -317,6 +320,7 @@ namespace
          * Generate all named packages.
          */
         c_generator_package = rb_define_class_under(c_generator_module, "Package", c_generator);
+        rb_undef_alloc_func(c_generator_package);
         rb_define_singleton_method(c_generator_package, "new", RUBY_FUNC_CAST(&generator_package_new), 1);
 
         /*
@@ -325,6 +329,7 @@ namespace
          * Generate all packages in a given category.
          */
         c_generator_category = rb_define_class_under(c_generator_module, "Category", c_generator);
+        rb_undef_alloc_func(c_generator_category);
         rb_define_singleton_method(c_generator_category, "new", RUBY_FUNC_CAST(&generator_category_new), 1);
 
         /*
@@ -333,6 +338,7 @@ namespace
          * Generate all packages in a given repository.
          */
         c_generator_in_repository = rb_define_class_under(c_generator_module, "InRepository", c_generator);
+        rb_undef_alloc_func(c_generator_in_repository);
         rb_define_singleton_method(c_generator_in_repository, "new", RUBY_FUNC_CAST(&generator_in_repository_new), 1);
 
         /*

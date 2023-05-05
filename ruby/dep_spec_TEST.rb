@@ -219,7 +219,7 @@ module Paludis
         end
 
         def test_version_requirements_mode
-            assert_kind_of Fixnum, pda.version_requirements_mode
+            assert_kind_of Integer, pda.version_requirements_mode
             assert_equal VersionRequirementsMode::And, pda.version_requirements_mode
         end
 

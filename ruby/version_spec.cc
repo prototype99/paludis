@@ -168,6 +168,7 @@ namespace
          * Comparable[http://www.ruby-doc.org/core/classes/Comparable.html]
          */
         c_version_spec = rb_define_class_under(paludis_module(), "VersionSpec", rb_cObject);
+        rb_undef_alloc_func(c_version_spec);
         rb_define_singleton_method(c_version_spec, "new", RUBY_FUNC_CAST(&version_spec_new), 1);
         rb_define_method(c_version_spec, "initialize", RUBY_FUNC_CAST(&version_spec_init), 1);
         rb_define_method(c_version_spec, "<=>", RDOC_IS_STUPID(version_spec_compare,(&Common<VersionSpec>::compare)), 1);

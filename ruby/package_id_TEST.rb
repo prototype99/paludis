@@ -88,7 +88,7 @@ module Paludis
 
         def test_type
             assert_respond_to mk, :type
-            assert_kind_of Fixnum, mk.type
+            assert_kind_of Integer, mk.type
         end
 
         def test_value

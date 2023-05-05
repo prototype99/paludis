@@ -153,6 +153,7 @@ namespace
          * Select some arbitrary version of some arbitrary package.
          */
         c_selection_some_arbitrary_version = rb_define_class_under(c_selection_module, "SomeArbitraryVersion", c_selection);
+        rb_undef_alloc_func(c_selection_some_arbitrary_version);
         rb_define_singleton_method(c_selection_some_arbitrary_version, "new",
                 RDOC_IS_STUPID(some_arbitrary_version_new, &SelectionNew<selection::SomeArbitraryVersion>::selection_new), 1);
 
@@ -162,6 +163,7 @@ namespace
          * Select the best version only of each package.
          */
         c_selection_best_version_only = rb_define_class_under(c_selection_module, "BestVersionOnly", c_selection);
+        rb_undef_alloc_func(c_selection_best_version_only);
         rb_define_singleton_method(c_selection_best_version_only, "new",
                 RDOC_IS_STUPID(best_version_only_new, &SelectionNew<selection::BestVersionOnly>::selection_new), 1);
 
@@ -171,6 +173,7 @@ namespace
          * Select the best version in each slot of each package.
          */
         c_selection_best_version_in_each_slot = rb_define_class_under(c_selection_module, "BestVersionInEachSlot", c_selection);
+        rb_undef_alloc_func(c_selection_best_version_in_each_slot);
         rb_define_singleton_method(c_selection_best_version_in_each_slot, "new",
                 RDOC_IS_STUPID(best_version_in_each_slot_new, &SelectionNew<selection::BestVersionInEachSlot>::selection_new), 1);
 
@@ -180,6 +183,7 @@ namespace
          * Select all versions, sorted.
          */
         c_selection_all_versions_sorted = rb_define_class_under(c_selection_module, "AllVersionsSorted", c_selection);
+        rb_undef_alloc_func(c_selection_all_versions_sorted);
         rb_define_singleton_method(c_selection_all_versions_sorted, "new",
                 RDOC_IS_STUPID(all_versions_sorted_new, &SelectionNew<selection::AllVersionsSorted>::selection_new), 1);
 
@@ -189,6 +193,7 @@ namespace
          * Select all versions, sorted and grouped by slot.
          */
         c_selection_all_versions_grouped_by_slot = rb_define_class_under(c_selection_module, "AllVersionsGroupedBySlot", c_selection);
+        rb_undef_alloc_func(c_selection_all_versions_grouped_by_slot);
         rb_define_singleton_method(c_selection_all_versions_grouped_by_slot, "new",
                 RDOC_IS_STUPID(all_versions_grouped_by_slot, &SelectionNew<selection::AllVersionsGroupedBySlot>::selection_new), 1);
 
@@ -198,6 +203,7 @@ namespace
          * Select all versions, in no particular order.
          */
         c_selection_all_versions_unsorted = rb_define_class_under(c_selection_module, "AllVersionsUnsorted", c_selection);
+        rb_undef_alloc_func(c_selection_all_versions_unsorted);
         rb_define_singleton_method(c_selection_all_versions_unsorted, "new",
                 RDOC_IS_STUPID(all_versions_unsorted_new, &SelectionNew<selection::AllVersionsUnsorted>::selection_new), 1);
 
@@ -207,6 +213,7 @@ namespace
          * Require exactly one matching ID.
          */
         c_selection_require_exactly_one = rb_define_class_under(c_selection_module, "RequireExactlyOne", c_selection);
+        rb_undef_alloc_func(c_selection_require_exactly_one);
         rb_define_singleton_method(c_selection_require_exactly_one, "new",
                 RDOC_IS_STUPID(require_exactly_one_new, &SelectionNew<selection::RequireExactlyOne>::selection_new), 1);
     }

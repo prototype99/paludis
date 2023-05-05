@@ -495,6 +495,7 @@ namespace
          * Metadata about a package.
          */
         c_package_id = rb_define_class_under(paludis_module(), "PackageID", rb_cObject);
+        rb_undef_alloc_func(c_package_id);
         rb_funcall(c_package_id, rb_intern("private_class_method"), 1, rb_str_new2("new"));
         rb_define_method(c_package_id, "canonical_form", RUBY_FUNC_CAST(&package_id_canonical_form), 1);
         rb_define_method(c_package_id, "name", RUBY_FUNC_CAST(&package_id_name), 0);

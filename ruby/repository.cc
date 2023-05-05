@@ -542,6 +542,7 @@ namespace
          * A Repository provides a representation of a physical repository to an Environment.
          */
         c_repository = rb_define_class_under(paludis_module(), "Repository", rb_cObject);
+        rb_undef_alloc_func(c_repository);
         rb_funcall(c_repository, rb_intern("private_class_method"), 1, rb_str_new2("new"));
         rb_define_method(c_repository, "name", RUBY_FUNC_CAST(&repository_name), 0);
 
@@ -586,6 +587,7 @@ namespace
          * Fake repository for use in test cases.
          */
         c_fake_repository = rb_define_class_under(paludis_module(), "FakeRepository", c_fake_repository_base);
+        rb_undef_alloc_func(c_fake_repository);
         rb_define_singleton_method(c_fake_repository, "new", RUBY_FUNC_CAST(&fake_repository_new), -1);
         rb_define_method(c_fake_repository, "initialize", RUBY_FUNC_CAST(&fake_repository_init), -1);
 

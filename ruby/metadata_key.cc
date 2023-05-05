@@ -630,6 +630,7 @@ namespace
          * Metadata class for Strings.
          */
         c_metadata_string_key = rb_define_class_under(paludis_module(), "MetadataStringKey", c_metadata_key);
+        rb_undef_alloc_func(c_metadata_string_key);
         rb_define_method(c_metadata_string_key, "parse_value", RUBY_FUNC_CAST(&metadata_string_key_value), 0);
 
         /*
@@ -638,6 +639,7 @@ namespace
          * Metadata class for SlotNames.
          */
         c_metadata_slot_key = rb_define_class_under(paludis_module(), "MetadataSlotNameKey", c_metadata_key);
+        rb_undef_alloc_func(c_metadata_slot_key);
         rb_define_method(c_metadata_slot_key, "parse_value", RUBY_FUNC_CAST(&metadata_slot_key_value), 0);
 
         /*
@@ -654,6 +656,7 @@ namespace
          * Metadata class for FSPath.
          */
         c_metadata_fsentry_key = rb_define_class_under(paludis_module(), "MetadataFSPathKey", c_metadata_key);
+        rb_undef_alloc_func(c_metadata_fsentry_key);
         rb_define_method(c_metadata_fsentry_key, "parse_value", RUBY_FUNC_CAST(&metadata_fsentry_key_value), 0);
 
         /*
@@ -662,6 +665,7 @@ namespace
          * Metadata class for Time.
          */
         c_metadata_time_key = rb_define_class_under(paludis_module(), "MetadataTimeKey", c_metadata_key);
+        rb_undef_alloc_func(c_metadata_time_key);
         rb_define_method(c_metadata_time_key, "parse_value", RUBY_FUNC_CAST(&metadata_time_key_value), 0);
 
         /*
@@ -670,6 +674,7 @@ namespace
          * Metadata class for Choices.
          */
         c_metadata_choices_key = rb_define_class_under(paludis_module(), "MetadataChoicesKey", c_metadata_key);
+        rb_undef_alloc_func(c_metadata_choices_key);
         rb_define_method(c_metadata_choices_key, "parse_value", RUBY_FUNC_CAST(&metadata_choices_key_value), 0);
 
         /*
@@ -678,6 +683,7 @@ namespace
          * Metadata class for keywords.
          */
         c_metadata_keyword_name_set_key = rb_define_class_under(paludis_module(), "MetadataKeywordNameSetKey", c_metadata_key);
+        rb_undef_alloc_func(c_metadata_keyword_name_set_key);
         rb_define_method(c_metadata_keyword_name_set_key, "parse_value", RUBY_FUNC_CAST((&SetValue<KeywordNameSet>::fetch)), 0);
 
         /*
@@ -710,6 +716,7 @@ namespace
          * Metadata class for String sets.
          */
         c_metadata_string_set_key = rb_define_class_under(paludis_module(), "MetadataStringSetKey", c_metadata_key);
+        rb_undef_alloc_func(c_metadata_string_set_key);
         rb_define_method(c_metadata_string_set_key, "parse_value", RUBY_FUNC_CAST((&SetValue<Set<std::string> >::fetch)), 0);
 
         /*
@@ -718,6 +725,7 @@ namespace
          * Metadata class for String to String maps.
          */
         c_metadata_string_string_map_key = rb_define_class_under(paludis_module(), "MetadataStringStringMapKey", c_metadata_key);
+        rb_undef_alloc_func(c_metadata_string_string_map_key);
         rb_define_method(c_metadata_string_string_map_key, "parse_value", RUBY_FUNC_CAST((&MapValue<Map<std::string, std::string> >::fetch)), 0);
 
         /*
@@ -734,6 +742,7 @@ namespace
          * Metadata class for license specs.
          */
         c_metadata_license_spec_tree_key = rb_define_class_under(paludis_module(), "MetadataLicenseSpecTreeKey", c_metadata_key);
+        rb_undef_alloc_func(c_metadata_license_spec_tree_key);
         rb_define_method(c_metadata_license_spec_tree_key, "parse_value", RUBY_FUNC_CAST((&SpecTreeValue<LicenseSpecTree>::fetch)), 0);
 
         /*
@@ -742,6 +751,7 @@ namespace
          * Metadata class for restrict specs.
          */
         c_metadata_plain_text_spec_tree_key = rb_define_class_under(paludis_module(), "MetadataPlainTextSpecTreeKey", c_metadata_key);
+        rb_undef_alloc_func(c_metadata_plain_text_spec_tree_key);
         rb_define_method(c_metadata_plain_text_spec_tree_key, "parse_value", RUBY_FUNC_CAST((&SpecTreeValue<PlainTextSpecTree>::fetch)), 0);
 
         /*
@@ -758,6 +768,7 @@ namespace
          * Metadata class for dependency specs.
          */
         c_metadata_dependency_spec_tree_key = rb_define_class_under(paludis_module(), "MetadataDependencySpecTreeKey", c_metadata_key);
+        rb_undef_alloc_func(c_metadata_dependency_spec_tree_key);
         rb_define_method(c_metadata_dependency_spec_tree_key, "parse_value", RUBY_FUNC_CAST((&SpecTreeValue<DependencySpecTree>::fetch)), 0);
         rb_define_method(c_metadata_dependency_spec_tree_key, "initial_labels", RUBY_FUNC_CAST(&metadata_dependency_spec_tree_key_initial_labels), 0);
 
@@ -767,6 +778,7 @@ namespace
          * Metadata class for fetchable uri specs.
          */
         c_metadata_fetchable_uri_spec_tree_key = rb_define_class_under(paludis_module(), "MetadataFetchableURISpecTreeKey", c_metadata_key);
+        rb_undef_alloc_func(c_metadata_fetchable_uri_spec_tree_key);
         rb_define_method(c_metadata_fetchable_uri_spec_tree_key, "parse_value", RUBY_FUNC_CAST((&SpecTreeValue<FetchableURISpecTree>::fetch)), 0);
         rb_define_method(c_metadata_fetchable_uri_spec_tree_key, "initial_label", RUBY_FUNC_CAST(&metadata_fetchable_uri_spec_tree_key_initial_label), 0);
 
@@ -776,6 +788,7 @@ namespace
          * Metadata class for simple uri specs.
          */
         c_metadata_simple_uri_spec_tree_key = rb_define_class_under(paludis_module(), "MetadataSimpleURISpecTreeKey", c_metadata_key);
+        rb_undef_alloc_func(c_metadata_simple_uri_spec_tree_key);
         rb_define_method(c_metadata_simple_uri_spec_tree_key, "parse_value", RUBY_FUNC_CAST((&SpecTreeValue<SimpleURISpecTree>::fetch)), 0);
 
         /*

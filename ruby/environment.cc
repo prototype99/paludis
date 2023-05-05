@@ -463,6 +463,7 @@ namespace
          * various methods for querying package visibility and options.
          */
         c_environment = rb_define_class_under(paludis_module(), "Environment", rb_cObject);
+        rb_undef_alloc_func(c_environment);
         rb_funcall(c_environment, rb_intern("private_class_method"), 1, rb_str_new2("new"));
         rb_define_method(c_environment, "set", RUBY_FUNC_CAST(&environment_set), 1);
         rb_define_method(c_environment, "distribution", RUBY_FUNC_CAST(&environment_distribution), 0);
@@ -495,6 +496,7 @@ namespace
          * An Environment that corresponds to the normal operating evironment.
          */
         c_paludis_environment = rb_define_class_under(paludis_module(), "PaludisEnvironment", c_environment);
+        rb_undef_alloc_func(c_paludis_environment);
         rb_define_singleton_method(c_paludis_environment, "new", RUBY_FUNC_CAST(&paludis_environment_new), -1);
         rb_define_method(c_paludis_environment, "initialize", RUBY_FUNC_CAST(&paludis_environment_init), -1);
         rb_define_method(c_paludis_environment, "config_dir", RUBY_FUNC_CAST(&paludis_environment_config_dir), 0);

@@ -925,6 +925,7 @@ namespace
          * Tests whether a Paludis::PackageID supports a particular action.
          */
         c_supports_action_test = rb_define_class_under(paludis_module(), "SupportsActionTest", rb_cObject);
+        rb_undef_alloc_func(c_supports_action_test);
         rb_define_singleton_method(c_supports_action_test, "new", RUBY_FUNC_CAST(&supports_action_test_new), 1);
 
         /*
@@ -941,6 +942,7 @@ namespace
          * An action for fetching.
          */
         c_fetch_action = rb_define_class_under(paludis_module(), "FetchAction", c_action);
+        rb_undef_alloc_func(c_fetch_action);
         rb_define_singleton_method(c_fetch_action, "new", RUBY_FUNC_CAST(&fetch_action_new), 1);
         rb_define_method(c_fetch_action, "initialize", RUBY_FUNC_CAST(&empty_init), -1);
         rb_define_method(c_fetch_action, "options", RUBY_FUNC_CAST(&BoxedAction<FetchAction>::options), 0);
@@ -951,6 +953,7 @@ namespace
          * Options for Paludis::FetchAction.
          */
         c_fetch_action_options = rb_define_class_under(paludis_module(), "FetchActionOptions", rb_cObject);
+        rb_undef_alloc_func(c_fetch_action_options);
         rb_define_singleton_method(c_fetch_action_options, "new", RUBY_FUNC_CAST(&fetch_action_options_new), -1);
         rb_define_method(c_fetch_action_options, "initialize", RUBY_FUNC_CAST(&empty_init), -1);
         rb_define_method(c_fetch_action_options, "tool_prefix",
@@ -972,6 +975,7 @@ namespace
          * A failed fetch action part.
          */
         c_fetch_action_failure = rb_define_class_under(paludis_module(), "FetchActionFailure", rb_cObject);
+        rb_undef_alloc_func(c_fetch_action_failure);
         rb_define_singleton_method(c_fetch_action_failure, "new", RUBY_FUNC_CAST(&fetch_action_failure_new), -1);
         rb_define_method(c_fetch_action_failure, "initialize", RUBY_FUNC_CAST(&empty_init), -1);
         rb_define_method(c_fetch_action_failure, "target_file",
@@ -993,6 +997,7 @@ namespace
          * Options for Paludis::InfoAction
          */
         c_info_action_options = rb_define_class_under(paludis_module(), "InfoActionOptions", rb_cObject);
+        rb_undef_alloc_func(c_info_action_options);
         rb_define_singleton_method(c_info_action_options, "new", RUBY_FUNC_CAST(&info_action_options_new), -1);
         rb_define_method(c_info_action_options, "initialize", RUBY_FUNC_CAST(&empty_init), -1);
 
@@ -1002,6 +1007,7 @@ namespace
          * An action for fetching.
          */
         c_info_action = rb_define_class_under(paludis_module(), "InfoAction", c_action);
+        rb_undef_alloc_func(c_info_action);
         rb_define_singleton_method(c_info_action, "new", RUBY_FUNC_CAST(&info_action_new), 1);
         rb_define_method(c_info_action, "initialize", RUBY_FUNC_CAST(&empty_init), -1);
         rb_define_method(c_info_action, "options", RUBY_FUNC_CAST(&BoxedAction<InfoAction>::options), 0);
@@ -1012,6 +1018,7 @@ namespace
          * Options for Paludis::ConfigAction
          */
         c_config_action_options = rb_define_class_under(paludis_module(), "ConfigActionOptions", rb_cObject);
+        rb_undef_alloc_func(c_config_action_options);
         rb_define_singleton_method(c_config_action_options, "new", RUBY_FUNC_CAST(&config_action_options_new), -1);
         rb_define_method(c_config_action_options, "initialize", RUBY_FUNC_CAST(&empty_init), -1);
 
@@ -1021,6 +1028,7 @@ namespace
          * An action for fetching.
          */
         c_config_action = rb_define_class_under(paludis_module(), "ConfigAction", c_action);
+        rb_undef_alloc_func(c_config_action);
         rb_define_singleton_method(c_config_action, "new", RUBY_FUNC_CAST(&config_action_new), 1);
         rb_define_method(c_config_action, "initialize", RUBY_FUNC_CAST(&empty_init), -1);
         rb_define_method(c_config_action, "options", RUBY_FUNC_CAST(&BoxedAction<ConfigAction>::options), 0);
@@ -1031,6 +1039,7 @@ namespace
          * Options for Paludis::InstallAction.
          */
         c_install_action_options = rb_define_class_under(paludis_module(), "InstallActionOptions", rb_cObject);
+        rb_undef_alloc_func(c_install_action_options);
         rb_define_singleton_method(c_install_action_options, "new", RUBY_FUNC_CAST(&install_action_options_new), -1);
         rb_define_method(c_install_action_options, "initialize", RUBY_FUNC_CAST(&empty_init), -1);
         rb_define_method(c_install_action_options, "destination", RUBY_FUNC_CAST(&BoxedOptions<InstallActionOptions>::destination), 0);
@@ -1041,6 +1050,7 @@ namespace
          * An InstallAction is used by InstallTask to install a PackageID.
          */
         c_install_action = rb_define_class_under(paludis_module(), "InstallAction", c_action);
+        rb_undef_alloc_func(c_install_action);
         rb_define_singleton_method(c_install_action, "new", RUBY_FUNC_CAST(&install_action_new), 1);
         rb_define_method(c_install_action, "initialize", RUBY_FUNC_CAST(&empty_init), -1);
         rb_define_method(c_install_action, "options", RUBY_FUNC_CAST(&BoxedAction<InstallAction>::options), 0);
@@ -1051,6 +1061,7 @@ namespace
          * Options for Paludis::UninstallAction.
          */
         c_uninstall_action_options = rb_define_class_under(paludis_module(), "UninstallActionOptions", rb_cObject);
+        rb_undef_alloc_func(c_uninstall_action_options);
         rb_define_singleton_method(c_uninstall_action_options, "new", RUBY_FUNC_CAST(&uninstall_action_options_new), -1);
         rb_define_method(c_uninstall_action_options, "initialize", RUBY_FUNC_CAST(&empty_init), -1);
         rb_define_method(c_uninstall_action_options, "config_protect", RUBY_FUNC_CAST(&uninstall_action_options_config_protect), 0);
@@ -1061,6 +1072,7 @@ namespace
          * An UninstallAction is used by UninstallTask to uninstall a PackageID.
          */
         c_uninstall_action = rb_define_class_under(paludis_module(), "UninstallAction", c_action);
+        rb_undef_alloc_func(c_uninstall_action);
         rb_define_singleton_method(c_uninstall_action, "new", RUBY_FUNC_CAST(&uninstall_action_new), 1);
         rb_define_method(c_uninstall_action, "initialize", RUBY_FUNC_CAST(&empty_init), -1);
         rb_define_method(c_uninstall_action, "options", RUBY_FUNC_CAST(&BoxedAction<UninstallAction>::options), 0);
@@ -1071,6 +1083,7 @@ namespace
          * Options for Paludis::PretendAction.
          */
         c_pretend_action_options = rb_define_class_under(paludis_module(), "PretendActionOptions", rb_cObject);
+        rb_undef_alloc_func(c_pretend_action_options);
         rb_define_singleton_method(c_pretend_action_options, "new", RUBY_FUNC_CAST(&pretend_action_options_new), -1);
         rb_define_method(c_pretend_action_options, "initialize", RUBY_FUNC_CAST(&empty_init), -1);
         rb_define_method(c_pretend_action_options, "destination", RUBY_FUNC_CAST(&BoxedOptions<PretendActionOptions>::destination), 0);
@@ -1081,6 +1094,7 @@ namespace
          * A PretendAction is used by InstallTask to handle install-pretend-phase checks on a PackageID.
          */
         c_pretend_action = rb_define_class_under(paludis_module(), "PretendAction", c_action);
+        rb_undef_alloc_func(c_pretend_action);
         rb_define_singleton_method(c_pretend_action, "new", RUBY_FUNC_CAST(&pretend_action_new), 1);
         rb_define_method(c_pretend_action, "initialize", RUBY_FUNC_CAST(&empty_init), -1);
         rb_define_method(c_pretend_action, "failed?", RUBY_FUNC_CAST(&pretend_action_failed), 0);

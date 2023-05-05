@@ -336,6 +336,7 @@ namespace
          * A collection of Choice objects for a PackageID.
          */
         c_choices = rb_define_class_under(paludis_module(), "Choices", rb_cObject);
+        rb_undef_alloc_func(c_choices);
         rb_funcall(c_choices, rb_intern("private_class_method"), 1, rb_str_new2("new"));
         rb_define_method(c_choices, "each", RUBY_FUNC_CAST(&choices_each), 0);
         rb_include_module(c_choices, rb_mEnumerable);
@@ -348,6 +349,7 @@ namespace
          * A collection of ChoiceValue objects for a PackageID's Choices.
          */
         c_choice = rb_define_class_under(paludis_module(), "Choice", rb_cObject);
+        rb_undef_alloc_func(c_choice);
         rb_funcall(c_choice, rb_intern("private_class_method"), 1, rb_str_new2("new"));
         rb_define_method(c_choice, "raw_name", RDOC_IS_STUPID(choice_raw_name,
                     (&ChoiceStringishMembers<std::string, &Choice::raw_name>::fetch)), 0);
@@ -384,6 +386,7 @@ namespace
          * A single ChoiceValue object for a Choice.
          */
         c_choice_value = rb_define_class_under(paludis_module(), "ChoiceValue", rb_cObject);
+        rb_undef_alloc_func(c_choice_value);
         rb_funcall(c_choice_value, rb_intern("private_class_method"), 1, rb_str_new2("new"));
         rb_define_method(c_choice_value, "unprefixed_name", RDOC_IS_STUPID(choice_value_unprefixed_name,
                     (&ChoiceValueStringishMembers<UnprefixedChoiceName, &ChoiceValue::unprefixed_name>::fetch)), 0);

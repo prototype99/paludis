@@ -313,6 +313,7 @@ namespace
          * but not Comparable.
          */
         c_contents = rb_define_class_under(paludis_module(), "Contents", rb_cObject);
+        rb_undef_alloc_func(c_contents);
         rb_include_module(c_contents, rb_mEnumerable);
         rb_define_singleton_method(c_contents, "new", RUBY_FUNC_CAST(&contents_new), 0);
         rb_define_method(c_contents, "initialize", RUBY_FUNC_CAST(&contents_init), 0);
@@ -336,6 +337,7 @@ namespace
          * A file ContentsEntry
          */
         c_contents_file_entry = rb_define_class_under(paludis_module(), "ContentsFileEntry", c_contents_entry);
+        rb_undef_alloc_func(c_contents_file_entry);
         rb_define_singleton_method(c_contents_file_entry, "new", RUBY_FUNC_CAST(&contents_file_entry_new), -1);
         rb_define_method(c_contents_file_entry, "part_key", RUBY_FUNC_CAST(&contents_file_entry_part_key), 0);
 
@@ -345,6 +347,7 @@ namespace
          * A directory ContentsEntry
          */
         c_contents_dir_entry = rb_define_class_under(paludis_module(), "ContentsDirEntry", c_contents_entry);
+        rb_undef_alloc_func(c_contents_dir_entry);
         rb_define_singleton_method(c_contents_dir_entry, "new", RUBY_FUNC_CAST((&ContentsNew<ContentsDirEntry>::contents_entry_new)), -1);
 
         /*
@@ -353,6 +356,7 @@ namespace
          *  An 'other' ContentsEntry
          */
         c_contents_other_entry = rb_define_class_under(paludis_module(), "ContentsOtherEntry", c_contents_entry);
+        rb_undef_alloc_func(c_contents_other_entry);
         rb_define_singleton_method(c_contents_other_entry, "new", RUBY_FUNC_CAST((&ContentsNew<ContentsOtherEntry>::contents_entry_new)), -1);
 
 
@@ -362,6 +366,7 @@ namespace
          * A symlink ContentsEntry
          */
         c_contents_sym_entry = rb_define_class_under(paludis_module(), "ContentsSymEntry", c_contents_entry);
+        rb_undef_alloc_func(c_contents_sym_entry);
         rb_define_singleton_method(c_contents_sym_entry, "new", RUBY_FUNC_CAST(&contents_sym_entry_new), -1);
         rb_define_method(c_contents_sym_entry, "target_key", RUBY_FUNC_CAST(&contents_sym_entry_target_key), 0);
         rb_define_method(c_contents_sym_entry, "part_key", RUBY_FUNC_CAST(&contents_sym_entry_part_key), 0);

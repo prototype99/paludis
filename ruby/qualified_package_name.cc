@@ -143,6 +143,7 @@ namespace
          * Comparable[http://www.ruby-doc.org/core/classes/Comparable.html]
          */
         c_qualified_package_name = rb_define_class_under(paludis_module(), "QualifiedPackageName", rb_cObject);
+        rb_undef_alloc_func(c_qualified_package_name);
         rb_define_singleton_method(c_qualified_package_name, "new", RUBY_FUNC_CAST(&qualified_package_name_new), -1);
         rb_define_method(c_qualified_package_name, "initialize", RUBY_FUNC_CAST(&qualified_package_name_init), -1);
         rb_define_method(c_qualified_package_name, "<=>", RUBY_FUNC_CAST(&qualified_package_name_compare), 1);

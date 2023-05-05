@@ -129,6 +129,7 @@ namespace
          * A combined Generator and Filter for an Environment selection.
          */
         c_filtered_generator = rb_define_class_under(paludis_module(), "FilteredGenerator", rb_cObject);
+        rb_undef_alloc_func(c_filtered_generator);
         rb_define_singleton_method(c_filtered_generator, "new", RUBY_FUNC_CAST(&filtered_generator_new), 2);
         rb_define_method(c_filtered_generator, "initialize", RUBY_FUNC_CAST(&filtered_generator_init), -1);
         rb_define_method(c_filtered_generator, "to_s", RUBY_FUNC_CAST(&Common<FilteredGenerator>::to_s), 0);

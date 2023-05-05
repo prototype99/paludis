@@ -1004,6 +1004,7 @@ namespace
          * Enumerable[http://www.ruby-doc.org/core/classes/Enumerable.html].
          */
         c_all_dep_spec = rb_define_class_under(paludis_module(), "AllDepSpec", c_dep_spec);
+        rb_undef_alloc_func(c_all_dep_spec);
         rb_funcall(c_all_dep_spec, rb_intern("private_class_method"), 1, rb_str_new2("new"));
         rb_include_module(c_all_dep_spec, rb_mEnumerable);
         rb_define_method(c_all_dep_spec, "each", RUBY_FUNC_CAST((&Composite<AllDepSpec>::each)), 0);
@@ -1015,6 +1016,7 @@ namespace
          * Enumerable[http://www.ruby-doc.org/core/classes/Enumerable.html].
          */
         c_any_dep_spec = rb_define_class_under(paludis_module(), "AnyDepSpec", c_dep_spec);
+        rb_undef_alloc_func(c_any_dep_spec);
         rb_funcall(c_any_dep_spec, rb_intern("private_class_method"), 1, rb_str_new2("new"));
         rb_include_module(c_any_dep_spec, rb_mEnumerable);
         rb_define_method(c_any_dep_spec, "each", RUBY_FUNC_CAST((&Composite<AllDepSpec>::each)), 0);
@@ -1048,6 +1050,7 @@ namespace
          * Enumerable[http://www.ruby-doc.org/core/classes/Enumerable.html].
          */
         c_conditional_dep_spec = rb_define_class_under(paludis_module(), "ConditionalDepSpec", c_dep_spec);
+        rb_undef_alloc_func(c_conditional_dep_spec);
         rb_funcall(c_conditional_dep_spec, rb_intern("private_class_method"), 1, rb_str_new2("new"));
         rb_include_module(c_conditional_dep_spec, rb_mEnumerable);
         /*
@@ -1132,6 +1135,7 @@ namespace
          * use Paludis::parse_user_package_dep_spec.
          */
         c_package_dep_spec = rb_define_class_under(paludis_module(), "PackageDepSpec", c_string_dep_spec);
+        rb_undef_alloc_func(c_package_dep_spec);
         rb_define_method(c_package_dep_spec, "package", RUBY_FUNC_CAST(&package_dep_spec_package), 0);
         rb_define_method(c_package_dep_spec, "package_name_part", RUBY_FUNC_CAST(&package_dep_spec_package_name_part), 0);
         rb_define_method(c_package_dep_spec, "category_name_part", RUBY_FUNC_CAST(&package_dep_spec_category_name_part), 0);
@@ -1155,6 +1159,7 @@ namespace
          * A PlainTextDepSpec represents a plain text entry (for example, a URI in SRC_URI).
          */
         c_plain_text_dep_spec = rb_define_class_under(paludis_module(), "PlainTextDepSpec", c_string_dep_spec);
+        rb_undef_alloc_func(c_plain_text_dep_spec);
         rb_define_singleton_method(c_plain_text_dep_spec, "new", RUBY_FUNC_CAST(&DepSpecThings<PlainTextDepSpec>::dep_spec_new_1), 1);
         rb_define_method(c_plain_text_dep_spec, "initialize", RUBY_FUNC_CAST(&dep_spec_init_1), 1);
         VALUE (* plain_text_dep_spec_to_s) (VALUE) = &dep_spec_to_s<PlainTextDepSpec>;
@@ -1166,6 +1171,7 @@ namespace
          * A DependenciesLabelsDepSpec holds dependencies labels.
          */
         c_dependencies_labels_dep_spec = rb_define_class_under(paludis_module(), "DependenciesLabelsDepSpec", c_string_dep_spec);
+        rb_undef_alloc_func(c_dependencies_labels_dep_spec);
         rb_define_singleton_method(c_dependencies_labels_dep_spec, "new", RUBY_FUNC_CAST(&DepSpecThings<DependenciesLabelsDepSpec>::dep_spec_new_0), 0);
         rb_define_method(c_dependencies_labels_dep_spec, "initialize", RUBY_FUNC_CAST(&dep_spec_init_0), 0);
         VALUE (* dependencies_labels_dep_spec_to_s) (VALUE) = &dep_spec_to_s<DependenciesLabelsDepSpec>;
@@ -1178,6 +1184,7 @@ namespace
          * A URILabelsDepSpec holds URI labels.
          */
         c_uri_labels_dep_spec = rb_define_class_under(paludis_module(), "URILabelsDepSpec", c_string_dep_spec);
+        rb_undef_alloc_func(c_uri_labels_dep_spec);
         rb_define_singleton_method(c_uri_labels_dep_spec, "new", RUBY_FUNC_CAST(&DepSpecThings<URILabelsDepSpec>::dep_spec_new_0), 0);
         rb_define_method(c_uri_labels_dep_spec, "initialize", RUBY_FUNC_CAST(&dep_spec_init_0), 0);
         VALUE (* uri_labels_dep_spec_to_s) (VALUE) = &dep_spec_to_s<URILabelsDepSpec>;
@@ -1202,6 +1209,7 @@ namespace
          * associated version and SLOT restrictions.
          */
         c_block_dep_spec = rb_define_class_under(paludis_module(), "BlockDepSpec", c_string_dep_spec);
+        rb_undef_alloc_func(c_block_dep_spec);
         rb_define_singleton_method(c_block_dep_spec, "new", RUBY_FUNC_CAST(&block_dep_spec_new), 2);
         rb_define_method(c_block_dep_spec, "initialize", RUBY_FUNC_CAST(&dep_spec_init_1), 2);
         rb_define_method(c_block_dep_spec, "blocking", RUBY_FUNC_CAST(&block_dep_spec_blocking), 0);
@@ -1239,6 +1247,7 @@ namespace
          * An exact slot requirement (:slot)
          */
         c_slot_exact_partial_requirement = rb_define_class_under(paludis_module(), "SlotExactPartialRequirement", c_slot_requirement);
+        rb_undef_alloc_func(c_slot_exact_partial_requirement);
         rb_define_method(c_slot_exact_partial_requirement, "slot", RUBY_FUNC_CAST(&slot_exact_requirement_slot), 0);
 
         /*
