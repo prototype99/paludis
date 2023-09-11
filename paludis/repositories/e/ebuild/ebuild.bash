@@ -491,6 +491,16 @@ ebuild_load_ebuild()
     PALUDIS_DECLARED_FUNCTIONS=$(declare -F | while read paludis_v ; do
         echo -n ${paludis_v#declare -f } " "
     done )
+
+    for var in $(
+      declare -A | while read -r var1; do
+        [[ "${var1}" =~ ^(declare|local|typeset)[^=]*-A(\ -[^gx])*\ ([a-zA-Z0-9_]*) ]] && echo "${BASH_REMATCH[3]}"
+      done
+    ); do
+      value=$(declare -p "$var")
+      unset "${!var}"
+      declare -gA "${var}"="${value#*=}"
+    done
 }
 
 ebuild_load_em_up_dan()
