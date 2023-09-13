@@ -22,6 +22,9 @@ endif()
 check_cxx_compiler_flag("-Werror -Wall" CXX_SUPPORTS_WALL)
 append_if(CXX_SUPPORTS_WALL "-Wall" CMAKE_CXX_FLAGS)
 
+check_cxx_compiler_flag("-Werror -Wpedantic" CXX_SUPPORTS_WPEDANTIC)
+append_if(CXX_SUPPORTS_WPEDANTIC "-Wpedantic" CMAKE_CXX_FLAGS)
+
 check_cxx_compiler_flag("-Werror -Wextra" CXX_SUPPORTS_WEXTRA)
 append_if(CXX_SUPPORTS_WEXTRA "-Wextra" CMAKE_CXX_FLAGS)
 

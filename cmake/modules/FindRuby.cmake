@@ -8,7 +8,7 @@ FindRuby
 Find Ruby
 
 This module finds if Ruby is installed and determines where the
-include files and libraries are.  Ruby 1.8 through 3.1 are
+include files and libraries are.  Ruby 1.8 through 3.2 are
 supported.
 
 The minimum required version of Ruby can be specified using the
@@ -113,9 +113,17 @@ endforeach()
 # uncomment the following line to get debug output for this file
 # set(_Ruby_DEBUG_OUTPUT TRUE)
 
-# Determine the list of possible names of the ruby executable depending
-# on which version of ruby is required
-set(_Ruby_POSSIBLE_EXECUTABLE_NAMES ruby)
+# Ruby naming handling
+if (DEFINED Ruby_FIND_UNVERSIONED_NAMES)
+  if (NOT Ruby_FIND_UNVERSIONED_NAMES MATCHES "^(FIRST|LAST|NEVER)$")
+    message (AUTHOR_WARNING "FindRuby: ${_Ruby_FIND_UNVERSIONED_NAMES}: invalid value for 'Ruby_FIND_UNVERSIONED_NAMES'. 'FIRST', 'LAST' or 'NEVER' expected. 'LAST' will be used instead.")
+    set (_Ruby_FIND_UNVERSIONED_NAMES LAST)
+  else()
+    set (_Ruby_FIND_UNVERSIONED_NAMES ${Ruby_FIND_UNVERSIONED_NAMES})
+  endif()
+else()
+  set (_Ruby_FIND_UNVERSIONED_NAMES LAST)
+endif()
 
 # If not specified, allow everything as far back as 1.8.0
 if(NOT DEFINED Ruby_FIND_VERSION_MAJOR)
@@ -130,21 +138,28 @@ if(_Ruby_DEBUG_OUTPUT)
   message("Ruby_FIND_VERSION_MAJOR=${Ruby_FIND_VERSION_MAJOR}")
   message("Ruby_FIND_VERSION_MINOR=${Ruby_FIND_VERSION_MINOR}")
   message("Ruby_FIND_VERSION_PATCH=${Ruby_FIND_VERSION_PATCH}")
+  message("Ruby_FIND_VERSION_EXACT=${Ruby_FIND_VERSION_EXACT}")
 endif()
 
 set(Ruby_FIND_VERSION_SHORT_NODOT "${Ruby_FIND_VERSION_MAJOR}${Ruby_FIND_VERSION_MINOR}")
 
+# Determine the list of possible names of the ruby executable depending
+# on which version of ruby is required
+
 # Set name of possible executables, ignoring the minor
 # Eg:
-# 2.1.1 => from ruby31 to ruby21 included
-# 2.1   => from ruby31 to ruby21 included
-# 2     => from ruby31 to ruby20 included
-# empty => from ruby31 to ruby18 included
+# 2.1.1 => from ruby32 to ruby21 included
+# 2.1   => from ruby32 to ruby21 included
+# 2     => from ruby32 to ruby20 included
+# empty => from ruby32 to ruby18 included
 if(NOT Ruby_FIND_VERSION_EXACT)
 
-  foreach(_ruby_version RANGE 31 18 -1)
+  foreach(_ruby_version RANGE 32 18 -1)
     string(SUBSTRING "${_ruby_version}" 0 1 _ruby_major_version)
     string(SUBSTRING "${_ruby_version}" 1 1 _ruby_minor_version)
+    if(_Ruby_DEBUG_OUTPUT)
+      message("${_ruby_version} ${_ruby_major_version}${_ruby_minor_version}")
+    endif()
 
     if(NOT "${_ruby_major_version}${_ruby_minor_version}" VERSION_LESS ${Ruby_FIND_VERSION_SHORT_NODOT})
       # Append both rubyX.Y and rubyXY (eg: ruby2.7 ruby27)
@@ -156,6 +171,15 @@ if(NOT Ruby_FIND_VERSION_EXACT)
   endforeach()
 
   list(REMOVE_DUPLICATES _Ruby_POSSIBLE_EXECUTABLE_NAMES)
+else()
+  # Append both rubyX.Y and rubyXY (eg: ruby2.7 ruby27)
+  list(APPEND _Ruby_POSSIBLE_EXECUTABLE_NAMES ruby${Ruby_FIND_VERSION_MAJOR}.${Ruby_FIND_VERSION_MINOR} ruby${Ruby_FIND_VERSION_MAJOR}${Ruby_FIND_VERSION_MINOR})
+endif()
+
+if (_Ruby_FIND_UNVERSIONED_NAMES STREQUAL "FIRST")
+  list(PREPEND _Ruby_POSSIBLE_EXECUTABLE_NAMES ruby)
+elseif (_Ruby_FIND_UNVERSIONED_NAMES STREQUAL "LAST")
+  list(APPEND _Ruby_POSSIBLE_EXECUTABLE_NAMES ruby)
 endif()
 
 # virtual environments handling (eg RVM)
@@ -371,10 +395,10 @@ if(Ruby_EXECUTABLE AND NOT Ruby_VERSION_MAJOR)
     set(Ruby_VERSION_MAJOR 2)
     string(REGEX_REPLACE ${Ruby_EXECUTABLE} "ruby2\\.?([0-7])" "\\1" Ruby_VERSION_MINOR)
   endif()
-  # check whether we found 3.[0-1].x
+  # check whether we found 3.[0-2].x
   if(${Ruby_EXECUTABLE} MATCHES "ruby3")
     set(Ruby_VERSION_MAJOR 3)
-    string(REGEX_REPLACE ${Ruby_EXECUTABLE} "ruby3\\.?([0-1])" "\\1" Ruby_VERSION_MINOR)
+    string(REGEX_REPLACE ${Ruby_EXECUTABLE} "ruby3\\.?([0-2])" "\\1" Ruby_VERSION_MINOR)
   endif()
 
 endif()
@@ -414,7 +438,7 @@ endif()
 
 
 # Determine the list of possible names for the ruby library
-set(_Ruby_POSSIBLE_LIB_NAMES ruby ruby-static ruby${_Ruby_VERSION_SHORT} ruby${_Ruby_VERSION_SHORT_NODOT} ruby${_Ruby_NODOT_VERSION} ruby-${_Ruby_VERSION_SHORT} ruby-${Ruby_VERSION})
+set(_Ruby_POSSIBLE_LIB_NAMES ruby${_Ruby_VERSION_SHORT} ruby${_Ruby_VERSION_SHORT_NODOT} ruby${_Ruby_NODOT_VERSION} ruby-${_Ruby_VERSION_SHORT} ruby-${Ruby_VERSION})
 
 if(WIN32)
   set(_Ruby_POSSIBLE_MSVC_RUNTIMES "msvcrt;vcruntime140;vcruntime140_1")
@@ -440,6 +464,12 @@ if(WIN32)
   endforeach()
 endif()
 
+if (_Ruby_FIND_UNVERSIONED_NAMES STREQUAL "FIRST")
+  list(PREPEND _Ruby_POSSIBLE_LIB_NAMES ruby ruby-static )
+elseif (_Ruby_FIND_UNVERSIONED_NAMES STREQUAL "LAST")
+  list(APPEND _Ruby_POSSIBLE_LIB_NAMES ruby ruby-static )
+endif()
+
 find_library(Ruby_LIBRARY NAMES ${_Ruby_POSSIBLE_LIB_NAMES} HINTS ${Ruby_POSSIBLE_LIB_DIR} )
 
 set(_Ruby_REQUIRED_VARS Ruby_EXECUTABLE Ruby_INCLUDE_DIR Ruby_LIBRARY)
@@ -461,9 +491,15 @@ if(_Ruby_DEBUG_OUTPUT)
   message(STATUS "Ruby_INCLUDE_DIR: ${Ruby_INCLUDE_DIR}")
   message(STATUS "Ruby_CONFIG_INCLUDE_DIR: ${Ruby_CONFIG_INCLUDE_DIR}")
   message(STATUS "--------------------")
+  message(STATUS "Ruby_VERSION: ${Ruby_VERSION}")
+  message(STATUS "_Ruby_VERSION_SHORT: ${_Ruby_VERSION_SHORT}")
+  message(STATUS "_Ruby_VERSION_SHORT_NODOT: ${_Ruby_VERSION_SHORT_NODOT}")
+  message(STATUS "_Ruby_NODOT_VERSION: ${_Ruby_NODOT_VERSION}")
+  message(STATUS "_Ruby_NODOT_VERSION_ZERO_PATCH: ${_Ruby_NODOT_VERSION_ZERO_PATCH}")
 endif()
 
-include(${CMAKE_CURRENT_LIST_DIR}/FindPackageHandleStandardArgs.cmake)
+# include(${CMAKE_CURRENT_LIST_DIR}/FindPackageHandleStandardArgs.cmake)
+include(${CMAKE_ROOT}/Modules/FindPackageHandleStandardArgs.cmake)
 FIND_PACKAGE_HANDLE_STANDARD_ARGS(Ruby  REQUIRED_VARS  ${_Ruby_REQUIRED_VARS}
                                         VERSION_VAR Ruby_VERSION )
 
