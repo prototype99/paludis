@@ -5,13 +5,13 @@
 # next = all testing versions unmasked
 IMAGE_VERSION=${1:-latest}
 
-PYTHON_ABI=3.10
+PYTHON_ABI=3.11
 
 if [[ ${IMAGE_VERSION} == "latest" ]]; then
     DEPENDENCY_VERSIONS="stable"
 elif [[ ${IMAGE_VERSION} == "next" ]]; then
     DEPENDENCY_VERSIONS="testing broken"
-    PYTHON_ABI=3.10
+    PYTHON_ABI=3.11
 else
     echo "Unknown image version, use 'latest' or 'next'"
     exit 1
