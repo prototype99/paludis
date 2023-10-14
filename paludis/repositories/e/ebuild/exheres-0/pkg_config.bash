@@ -36,7 +36,7 @@ exheres_internal_config()
     local old_sandbox_write="${SANDBOX_WRITE}"
     if [[ -z "${PALUDIS_DO_NOTHING_SANDBOXY}" ]]; then
         SANDBOX_WRITE="${SANDBOX_WRITE+${SANDBOX_WRITE}:}${ROOT%/}/"
-        esandbox check >/dev/null 2>&1 && esandbox allow "${ROOT}"
+        esandbox check 2>/dev/null && esandbox allow "${ROOT%/}/***"
     fi
 
     if hasq "config" ${SKIP_FUNCTIONS} ; then
@@ -49,7 +49,7 @@ exheres_internal_config()
 
     if [[ -z "${PALUDIS_DO_NOTHING_SANDBOXY}" ]]; then
         SANDBOX_WRITE="${old_sandbox_write}"
-        esandbox check >/dev/null 2>&1 && esandbox disallow "${ROOT}"
+        esandbox check 2>/dev/null && esandbox disallow "${ROOT%/}/***"
     fi
     true
 }

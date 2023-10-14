@@ -127,10 +127,12 @@ EbuildCommand::operator() ()
     if (params.clearenv())
         process.clearenv();
 
-    if (params.sydbox())
-        process.sydbox();
-    else if (params.sandbox())
+    if (params.sydbox()) {
+        std::string phaseCommands = commands();
+        process.sydbox(phaseCommands);
+    } else if (params.sandbox()) {
         process.sandbox();
+    }
 
     if (params.userpriv())
     {

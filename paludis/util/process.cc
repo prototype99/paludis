@@ -1372,6 +1372,15 @@ namespace
                 "I don't seem to be able to use " + s;
         return result;
     }
+
+    bool check_unshare()
+    {
+        bool result(0 == Process(ProcessCommand({ "sh", "-c", "sydbox -puser -PUNIS true 2>/dev/null" })).run().wait());
+        if (! result)
+            Log::get_instance()->message("util.system.containerless", ll_debug, lc_context) <<
+                "I don't seem to be able to use sydbox --unshare-net,user";
+        return result;
+    }
 }
 
 Process &
@@ -1399,20 +1408,37 @@ Process::sandbox()
 }
 
 Process &
-Process::sydbox()
+Process::sydbox(const std::string & ebuild_phase)
 {
     static bool can_use_sydbox(check_cmd("sydbox"));
+    static bool can_use_unshare(check_unshare());
 
     if (can_use_sydbox)
     {
-        if (! getenv_with_default(env_vars::do_nothing_sandboxy, "").empty())
+        if (! getenv_with_default(env_vars::do_nothing_sandboxy, "").empty()) {
             Log::get_instance()->message("util.system.nothing_sandboxy", ll_debug, lc_no_context)
                 << "PALUDIS_DO_NOTHING_SANDBOXY is set, not using sydbox";
-        else if (! getenv_with_default("SYDBOX_ACTIVE", "").empty())
+        } else if (! getenv_with_default("SYDBOX_ACTIVE", "").empty()) {
             Log::get_instance()->message("util.system.sandbox_in_sandbox", ll_warning, lc_no_context)
                 << "Already inside sydbox, not spawning another sydbox instance";
-        else
+        } else if (can_use_unshare &&
+                   (
+                    ebuild_phase.find("prepare") != std::string::npos ||
+                    ebuild_phase.find("configure") != std::string::npos ||
+                    ebuild_phase.find("compile") != std::string::npos ||
+                    ebuild_phase.find("test") != std::string::npos
+                   )) {
+            _imp->command.prepend_args({ "sydbox",
+                                       "--profile=paludis",
+                                       "--magic=sandbox/net:off",
+                                       "--unshare-ipc",
+                                       "--unshare-net",
+                                       "--unshare-pid",
+                                       "--unshare-user",
+                                       "--unshare-uts", "--" });
+        } else {
             _imp->command.prepend_args({ "sydbox", "--profile", "paludis", "--" });
+        }
     }
 
     return *this;

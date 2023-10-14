@@ -218,9 +218,9 @@ if [[ -z "${PALUDIS_DO_NOTHING_SANDBOXY}" ]] ; then
             /proc/self/{fd,attr,task} \
             /selinux/context \
             /tmp /var/tmp /var/cache \
-            "${PALUDIS_TMPDIR%/}"
+            "${PALUDIS_TMPDIR%/}/***"
         if [[ -n "${CCACHE_DIR}" ]]; then
-            esandbox allow "${CCACHE_DIR%/}"
+            esandbox allow "${CCACHE_DIR%/}/***"
         fi
 
         esandbox allow_net \
@@ -531,7 +531,7 @@ ebuild_load_em_up_dan()
     if [[ -z ${PALUDIS_DO_NOTHING_SANDBOXY} ]] ; then
         if [[ -n ${CCACHE_DIR} ]]; then
             export SANDBOX_WRITE=${SANDBOX_WRITE}:${CCACHE_DIR}
-            esandbox check 2>/dev/null && esandbox allow "${CCACHE_DIR}"
+            esandbox check 2>/dev/null && esandbox allow "${CCACHE_DIR%/}/***"
         fi
         if [[ -n ${TMPDIR} ]] && esandbox check 2>/dev/null; then
             local tmpdirc="$(canonicalise "${TMPDIR}")"

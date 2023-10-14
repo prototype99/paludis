@@ -28,7 +28,7 @@ exheres_internal_saveenv()
     local old_sandbox_write="${SANDBOX_WRITE}"
     if [[ -z "${PALUDIS_DO_NOTHING_SANDBOXY}" ]]; then
         SANDBOX_WRITE="${SANDBOX_WRITE+${SANDBOX_WRITE}:}${PALUDIS_LOADSAVEENV_DIR%/}/"
-        esandbox check >/dev/null 2>&1 && esandbox allow "${PALUDIS_LOADSAVEENV_DIR}"
+        esandbox check 2>/dev/null && esandbox allow "${PALUDIS_LOADSAVEENV_DIR%/}/***"
     fi
 
 
@@ -42,7 +42,7 @@ exheres_internal_saveenv()
 
     if [[ -z "${PALUDIS_DO_NOTHING_SANDBOXY}" ]]; then
         SANDBOX_WRITE="${old_sandbox_write}"
-        esandbox check >/dev/null 2>&1 && esandbox disallow "${PALUDIS_LOADSAVEENV_DIR}"
+        esandbox check 2>/dev/null && esandbox disallow "${PALUDIS_LOADSAVEENV_DIR%/}/***"
     fi
     true
 }
