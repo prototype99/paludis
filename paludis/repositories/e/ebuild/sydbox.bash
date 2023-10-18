@@ -242,7 +242,7 @@ esandbox_3()
         ;;
     exec)
         [[ ${#} < 1 ]] && die "${FUNCNAME} ${cmd} takes at least one extra argument"
-        [[ -e "$(sydbox exec -- ${@})" ]]
+        [[ -e "$(sydbox exec ${@})" ]]
         ;;
     kill)
         [[ ${#} < 1 ]] && die "${FUNCNAME} ${cmd} takes at least one extra argument"
