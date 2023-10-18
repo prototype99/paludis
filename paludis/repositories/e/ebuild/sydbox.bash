@@ -147,7 +147,10 @@ esandbox_3()
         echo -n 3
         ;;
     check)
-        [[ -e /dev/syd ]]
+        # [[ -e /dev/syd ]]
+        # The stat above will not work when SydB☮x is locked, however
+        # --check works regardless of the state of the sandbox lock.
+        sydbox --check
         ;;
     lock)
         [[ -e "/dev/syd/lock:on" ]]
