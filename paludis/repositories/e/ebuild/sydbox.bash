@@ -236,12 +236,16 @@ esandbox_3()
         sydbox_internal_path_1 "filter/exec" '-' "${@}"
         ;;
     addfilter_net)
+        local c="filter/net/bind"
+        [[ "${1}" == "--connect" ]] && c="filter/net/connect" && shift
         [[ ${#} < 1 ]] && die "${FUNCNAME} ${cmd} takes at least one extra argument"
-        sydbox_internal_net_3 "filter/net" '+' "${@}"
+        sydbox_internal_net_3 "${c}" '+' "${@}"
         ;;
     rmfilter_net)
+        local c="filter/net/bind"
+        [[ "${1}" == "--connect" ]] && c="filter/net/connect" && shift
         [[ ${#} < 1 ]] && die "${FUNCNAME} ${cmd} takes at least one extra argument"
-        sydbox_internal_net_3 "filter/net" '-' "${@}"
+        sydbox_internal_net_3 "${c}" '-' "${@}"
         ;;
     exec)
         [[ ${#} < 1 ]] && die "${FUNCNAME} ${cmd} takes at least one extra argument"
