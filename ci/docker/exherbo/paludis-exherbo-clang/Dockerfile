@@ -1,5 +1,5 @@
-FROM marvins/exherbo-x86_64-pc-linux-gnu-gcc-with-clang:14
-MAINTAINER Marvin Schmidt <marv@exherbo.org>
+FROM heirecka/exherbo-x86_64-pc-linux-gnu-gcc-with-clang:14
+MAINTAINER Heiko Becker <heirecka@exherbo.org>
 
 # Build generic binaries
 COPY ./config/bashrc /etc/paludis/bashrc
