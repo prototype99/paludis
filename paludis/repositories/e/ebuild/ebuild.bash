@@ -215,7 +215,7 @@ if [[ -z "${PALUDIS_DO_NOTHING_SANDBOXY}" ]] ; then
         esandbox allow \
             /dev/{stdout,stderr,zero,null,full,console,random,ptmx} \
             /dev/{fd,tts,pts,shm,tty,pty} \
-            /proc/self/{fd,attr,task} \
+            /proc/self/{fd,attr,task}/*** \
             /selinux/context \
             /tmp /var/tmp /var/cache \
             "${PALUDIS_TMPDIR%/}/***"
