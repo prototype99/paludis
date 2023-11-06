@@ -173,6 +173,24 @@ esandbox_3()
     disable|disable_path)
         [[ -e "/dev/syd/sandbox/write:off" ]]
         ;;
+    enabled_read)
+        [[ -e "/dev/syd/sandbox/read?" ]]
+        ;;
+    enable_read)
+        [[ -e "/dev/syd/sandbox/read:on" ]]
+        ;;
+    disable_read)
+        [[ -e "/dev/syd/sandbox/read:off" ]]
+        ;;
+    enabled_stat)
+        [[ -e "/dev/syd/sandbox/stat?" ]]
+        ;;
+    enable_stat)
+        [[ -e "/dev/syd/sandbox/stat:on" ]]
+        ;;
+    disable_stat)
+        [[ -e "/dev/syd/sandbox/stat:off" ]]
+        ;;
     enabled_exec)
         [[ -e "/dev/syd/sandbox/exec?" ]]
         ;;
@@ -199,6 +217,46 @@ esandbox_3()
         [[ ${#} < 1 ]] && die "${FUNCNAME} ${cmd} takes at least one extra argument"
         sydbox_internal_path_3 "allowlist/write" '-' "${@}"
         ;;
+    deny|deny_path)
+        [[ ${#} < 1 ]] && die "${FUNCNAME} ${cmd} takes at least one extra argument"
+        sydbox_internal_path_3 "denylist/write" '+' "${@}"
+        ;;
+    nodeny|nodeny_path)
+        [[ ${#} < 1 ]] && die "${FUNCNAME} ${cmd} takes at least one extra argument"
+        sydbox_internal_path_3 "denylist/write" '-' "${@}"
+        ;;
+    allow_read)
+        [[ ${#} < 1 ]] && die "${FUNCNAME} ${cmd} takes at least one extra argument"
+        sydbox_internal_path_3 "allowlist/read" '+' "${@}"
+        ;;
+    disallow_read)
+        [[ ${#} < 1 ]] && die "${FUNCNAME} ${cmd} takes at least one extra argument"
+        sydbox_internal_path_3 "allowlist/read" '-' "${@}"
+        ;;
+    deny_read)
+        [[ ${#} < 1 ]] && die "${FUNCNAME} ${cmd} takes at least one extra argument"
+        sydbox_internal_path_3 "denylist/read" '+' "${@}"
+        ;;
+    nodeny_read)
+        [[ ${#} < 1 ]] && die "${FUNCNAME} ${cmd} takes at least one extra argument"
+        sydbox_internal_path_3 "denylist/read" '-' "${@}"
+        ;;
+    allow_stat)
+        [[ ${#} < 1 ]] && die "${FUNCNAME} ${cmd} takes at least one extra argument"
+        sydbox_internal_path_3 "allowlist/stat" '+' "${@}"
+        ;;
+    disallow_stat)
+        [[ ${#} < 1 ]] && die "${FUNCNAME} ${cmd} takes at least one extra argument"
+        sydbox_internal_path_3 "allowlist/stat" '-' "${@}"
+        ;;
+    deny_stat)
+        [[ ${#} < 1 ]] && die "${FUNCNAME} ${cmd} takes at least one extra argument"
+        sydbox_internal_path_3 "denylist/stat" '+' "${@}"
+        ;;
+    nodeny_stat)
+        [[ ${#} < 1 ]] && die "${FUNCNAME} ${cmd} takes at least one extra argument"
+        sydbox_internal_path_3 "denylist/stat" '-' "${@}"
+        ;;
     allow_exec)
         [[ ${#} < 1 ]] && die "${FUNCNAME} ${cmd} takes at least one extra argument"
         sydbox_internal_path_3 "allowlist/exec" '+' "${@}"
@@ -206,6 +264,14 @@ esandbox_3()
     disallow_exec)
         [[ ${#} < 1 ]] && die "${FUNCNAME} ${cmd} takes at least one extra argument"
         sydbox_internal_path_3 "allowlist/exec" '-' "${@}"
+        ;;
+    deny_exec)
+        [[ ${#} < 1 ]] && die "${FUNCNAME} ${cmd} takes at least one extra argument"
+        sydbox_internal_path_3 "denylist/exec" '+' "${@}"
+        ;;
+    nodeny_exec)
+        [[ ${#} < 1 ]] && die "${FUNCNAME} ${cmd} takes at least one extra argument"
+        sydbox_internal_path_3 "denylist/exec" '-' "${@}"
         ;;
     allow_net)
         local c="allowlist/net/bind"
@@ -226,6 +292,22 @@ esandbox_3()
     rmfilter|rmfilter_path)
         [[ ${#} < 1 ]] && die "${FUNCNAME} ${cmd} takes at least one extra argument"
         sydbox_internal_path_1 "filter/write" '-' "${@}"
+        ;;
+    addfilter_read)
+        [[ ${#} < 1 ]] && die "${FUNCNAME} ${cmd} takes at least one extra argument"
+        sydbox_internal_path_1 "filter/read" '+' "${@}"
+        ;;
+    rmfilter_read)
+        [[ ${#} < 1 ]] && die "${FUNCNAME} ${cmd} takes at least one extra argument"
+        sydbox_internal_path_1 "filter/read" '-' "${@}"
+        ;;
+    addfilter_stat)
+        [[ ${#} < 1 ]] && die "${FUNCNAME} ${cmd} takes at least one extra argument"
+        sydbox_internal_path_1 "filter/stat" '+' "${@}"
+        ;;
+    rmfilter_stat)
+        [[ ${#} < 1 ]] && die "${FUNCNAME} ${cmd} takes at least one extra argument"
+        sydbox_internal_path_1 "filter/stat" '-' "${@}"
         ;;
     addfilter_exec)
         [[ ${#} < 1 ]] && die "${FUNCNAME} ${cmd} takes at least one extra argument"
