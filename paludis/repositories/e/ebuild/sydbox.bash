@@ -165,13 +165,22 @@ esandbox_3()
         ebuild_notice "warning" "${FUNCNAME} ${cmd} is not implemented for sydbox-3"
         false;;
     enabled|enabled_path)
-        [[ -e "/dev/syd/sandbox/write?" ]]
+        # Compatibility with syd-1:
+        [[ -e "/dev/syd/sandbox/read?" ]] &&
+            [[ -e "/dev/syd/sandbox/stat?" ]] &&
+            [[ -e "/dev/syd/sandbox/write?" ]]
         ;;
     enable|enable_path)
-        [[ -e "/dev/syd/sandbox/write:on" ]]
+        # Compatibility with syd-1:
+        [[ -e "/dev/syd/sandbox/read:on" ]] &&
+            [[ -e "/dev/syd/sandbox/stat:on" ]] &&
+            [[ -e "/dev/syd/sandbox/write:on" ]]
         ;;
     disable|disable_path)
-        [[ -e "/dev/syd/sandbox/write:off" ]]
+        # Compatibility with syd-1:
+        [[ -e "/dev/syd/sandbox/read:off" ]] &&
+            [[ -e "/dev/syd/sandbox/stat:off" ]] &&
+            [[ -e "/dev/syd/sandbox/write:off" ]]
         ;;
     enabled_read)
         [[ -e "/dev/syd/sandbox/read?" ]]
@@ -211,19 +220,29 @@ esandbox_3()
         ;;
     allow|allow_path)
         [[ ${#} < 1 ]] && die "${FUNCNAME} ${cmd} takes at least one extra argument"
-        sydbox_internal_path_3 "allowlist/write" '+' "${@}"
+        # Compatibility with syd-1:
+        for capability in read write stat; do
+            sydbox_internal_path_3 "allowlist/${capability}" '+' "${@}"
+        done
         ;;
     disallow|disallow_path)
         [[ ${#} < 1 ]] && die "${FUNCNAME} ${cmd} takes at least one extra argument"
-        sydbox_internal_path_3 "allowlist/write" '-' "${@}"
+        # Compatibility with syd-1:
+        for capability in read write stat; do
+            sydbox_internal_path_3 "allowlist/${capability}" '-' "${@}"
+        done
         ;;
     deny|deny_path)
         [[ ${#} < 1 ]] && die "${FUNCNAME} ${cmd} takes at least one extra argument"
-        sydbox_internal_path_3 "denylist/write" '+' "${@}"
+        for capability in read write stat; do
+            sydbox_internal_path_3 "denylist/${capability}" '+' "${@}"
+        done
         ;;
     nodeny|nodeny_path)
         [[ ${#} < 1 ]] && die "${FUNCNAME} ${cmd} takes at least one extra argument"
-        sydbox_internal_path_3 "denylist/write" '-' "${@}"
+        for capability in read write stat; do
+            sydbox_internal_path_3 "denylist/${capability}" '-' "${@}"
+        done
         ;;
     allow_read)
         [[ ${#} < 1 ]] && die "${FUNCNAME} ${cmd} takes at least one extra argument"
