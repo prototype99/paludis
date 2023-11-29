@@ -1373,6 +1373,15 @@ namespace
         return result;
     }
 
+    bool check_landlock()
+    {
+        bool result(0 == Process(ProcessCommand({ "sh", "-c", "sydbox --landlock >/dev/null 2>/dev/null" })).run().wait());
+        if (! result)
+            Log::get_instance()->message("util.system.landlockless", ll_debug, lc_context) <<
+                "I don't seem to be able to use sydbox with LandLock";
+        return result;
+    }
+
     bool check_unshare()
     {
         bool result(0 == Process(ProcessCommand({ "sh", "-c", "sydbox -ppaludis -PUNIS true 2>/dev/null" })).run().wait());
@@ -1408,9 +1417,11 @@ Process::sandbox()
 }
 
 Process &
-Process::sydbox(const std::string & ebuild_phase)
+Process::sydbox(const std::string & ebuild_phase,
+                const std::string & builddir)
 {
     static bool can_use_sydbox(check_cmd("sydbox"));
+    static bool can_use_landlock(check_landlock());
     static bool can_use_unshare(check_unshare());
 
     if (can_use_sydbox)
@@ -1421,21 +1432,25 @@ Process::sydbox(const std::string & ebuild_phase)
         } else if (! getenv_with_default("SYDBOX_ACTIVE", "").empty()) {
             Log::get_instance()->message("util.system.sandbox_in_sandbox", ll_warning, lc_no_context)
                 << "Already inside sydbox, not spawning another sydbox instance";
-        } else if (can_use_unshare &&
-                   (
-                    ebuild_phase.find("prepare") != std::string::npos ||
+        } else if (ebuild_phase.find("prepare") != std::string::npos ||
                     ebuild_phase.find("configure") != std::string::npos ||
                     ebuild_phase.find("compile") != std::string::npos ||
-                    ebuild_phase.find("test") != std::string::npos
-                   )) {
-            _imp->command.prepend_args({ "sydbox",
-                                       "--profile=paludis",
-                                       "--magic=sandbox/net:off",
-                                       "--unshare-ipc",
-                                       "--unshare-net",
-                                       "--unshare-pid",
-                                       "--unshare-user",
-                                       "--unshare-uts", "--" });
+                   ebuild_phase.find("test") != std::string::npos) {
+            _imp->command.prepend_args({ "--" });
+            if (can_use_landlock) {
+                // see sydbox --print landlock for the rules this profile has.
+                // Careful, we stack Paludis and Landlock profiles and
+                // LandLock profile must be the last supplied for it to work.
+                _imp->command.prepend_args({
+                    "--profile", "landlock",
+                    "-mallowlist/lock/write+" + builddir,
+                });
+            }
+            if (can_use_unshare) {
+                // --unshare-net,pid,user,uts
+                _imp->command.prepend_args({ "-NPUS" });
+            }
+            _imp->command.prepend_args({ "sydbox", "--profile", "paludis" });
         } else {
             _imp->command.prepend_args({ "sydbox", "--profile", "paludis", "--" });
         }

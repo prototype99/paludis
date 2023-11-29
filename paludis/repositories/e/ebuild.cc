@@ -129,7 +129,8 @@ EbuildCommand::operator() ()
 
     if (params.sydbox()) {
         std::string phaseCommands = commands();
-        process.sydbox(phaseCommands);
+        std::string builddir = stringify(params.builddir());
+        process.sydbox(phaseCommands, builddir);
     } else if (params.sandbox()) {
         process.sandbox();
     }

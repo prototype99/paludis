@@ -121,7 +121,8 @@ namespace paludis
             Process & extra_newlines_if_any_output_exists();
 
             Process & sandbox();
-            Process & sydbox(const std::string &);
+            Process & sydbox(const std::string &,
+                             const std::string &);
 
             /* NOTE: Do not use this functionality together with a
              *       multi-threaded process. Not only will all but the
