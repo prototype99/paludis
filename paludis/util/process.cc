@@ -1375,7 +1375,7 @@ namespace
 
     bool check_unshare()
     {
-        bool result(0 == Process(ProcessCommand({ "sh", "-c", "sydbox -puser -PUNIS true 2>/dev/null" })).run().wait());
+        bool result(0 == Process(ProcessCommand({ "sh", "-c", "sydbox -ppaludis -PUNIS true 2>/dev/null" })).run().wait());
         if (! result)
             Log::get_instance()->message("util.system.containerless", ll_debug, lc_context) <<
                 "I don't seem to be able to use sydbox --unshare-net,user";
