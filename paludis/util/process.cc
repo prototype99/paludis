@@ -1384,10 +1384,10 @@ namespace
 
     bool check_unshare()
     {
-        bool result(0 == Process(ProcessCommand({ "sh", "-c", "sydbox -ppaludis -PUNIS true 2>/dev/null" })).run().wait());
+        bool result(0 == Process(ProcessCommand({ "sh", "-c", "sydbox -ppaludis -pcontainer true 2>/dev/null" })).run().wait());
         if (! result)
             Log::get_instance()->message("util.system.containerless", ll_debug, lc_context) <<
-                "I don't seem to be able to use sydbox --unshare-net,user";
+                "I don't seem to be able to use sydbox with the container profile";
         return result;
     }
 }
@@ -1447,8 +1447,8 @@ Process::sydbox(const std::string & ebuild_phase,
                 });
             }
             if (can_use_unshare) {
-                // --unshare-net,pid,user,uts
-                _imp->command.prepend_args({ "-NPUS" });
+                // see sydbox --print container for the rules this profile has.
+                _imp->command.prepend_args({ "--profile", "container" });
             }
             _imp->command.prepend_args({ "sydbox", "--profile", "paludis" });
         } else {
