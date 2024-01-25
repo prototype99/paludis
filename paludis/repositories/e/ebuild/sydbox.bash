@@ -222,85 +222,85 @@ esandbox_3()
         [[ ${#} < 1 ]] && die "${FUNCNAME} ${cmd} takes at least one extra argument"
         # Compatibility with syd-1:
         for capability in read write stat; do
-            sydbox_internal_path_3 "allowlist/${capability}" '+' "${@}"
+            sydbox_internal_path_3 "allow/${capability}" '+' "${@}"
         done
         ;;
     disallow|disallow_path)
         [[ ${#} < 1 ]] && die "${FUNCNAME} ${cmd} takes at least one extra argument"
         # Compatibility with syd-1:
         for capability in read write stat; do
-            sydbox_internal_path_3 "allowlist/${capability}" '-' "${@}"
+            sydbox_internal_path_3 "allow/${capability}" '-' "${@}"
         done
         ;;
     deny|deny_path)
         [[ ${#} < 1 ]] && die "${FUNCNAME} ${cmd} takes at least one extra argument"
         for capability in read write stat; do
-            sydbox_internal_path_3 "denylist/${capability}" '+' "${@}"
+            sydbox_internal_path_3 "deny/${capability}" '+' "${@}"
         done
         ;;
     nodeny|nodeny_path)
         [[ ${#} < 1 ]] && die "${FUNCNAME} ${cmd} takes at least one extra argument"
         for capability in read write stat; do
-            sydbox_internal_path_3 "denylist/${capability}" '-' "${@}"
+            sydbox_internal_path_3 "deny/${capability}" '-' "${@}"
         done
         ;;
     allow_read)
         [[ ${#} < 1 ]] && die "${FUNCNAME} ${cmd} takes at least one extra argument"
-        sydbox_internal_path_3 "allowlist/read" '+' "${@}"
+        sydbox_internal_path_3 "allow/read" '+' "${@}"
         ;;
     disallow_read)
         [[ ${#} < 1 ]] && die "${FUNCNAME} ${cmd} takes at least one extra argument"
-        sydbox_internal_path_3 "allowlist/read" '-' "${@}"
+        sydbox_internal_path_3 "allow/read" '-' "${@}"
         ;;
     deny_read)
         [[ ${#} < 1 ]] && die "${FUNCNAME} ${cmd} takes at least one extra argument"
-        sydbox_internal_path_3 "denylist/read" '+' "${@}"
+        sydbox_internal_path_3 "deny/read" '+' "${@}"
         ;;
     nodeny_read)
         [[ ${#} < 1 ]] && die "${FUNCNAME} ${cmd} takes at least one extra argument"
-        sydbox_internal_path_3 "denylist/read" '-' "${@}"
+        sydbox_internal_path_3 "deny/read" '-' "${@}"
         ;;
     allow_stat)
         [[ ${#} < 1 ]] && die "${FUNCNAME} ${cmd} takes at least one extra argument"
-        sydbox_internal_path_3 "allowlist/stat" '+' "${@}"
+        sydbox_internal_path_3 "allow/stat" '+' "${@}"
         ;;
     disallow_stat)
         [[ ${#} < 1 ]] && die "${FUNCNAME} ${cmd} takes at least one extra argument"
-        sydbox_internal_path_3 "allowlist/stat" '-' "${@}"
+        sydbox_internal_path_3 "allow/stat" '-' "${@}"
         ;;
     deny_stat)
         [[ ${#} < 1 ]] && die "${FUNCNAME} ${cmd} takes at least one extra argument"
-        sydbox_internal_path_3 "denylist/stat" '+' "${@}"
+        sydbox_internal_path_3 "deny/stat" '+' "${@}"
         ;;
     nodeny_stat)
         [[ ${#} < 1 ]] && die "${FUNCNAME} ${cmd} takes at least one extra argument"
-        sydbox_internal_path_3 "denylist/stat" '-' "${@}"
+        sydbox_internal_path_3 "deny/stat" '-' "${@}"
         ;;
     allow_exec)
         [[ ${#} < 1 ]] && die "${FUNCNAME} ${cmd} takes at least one extra argument"
-        sydbox_internal_path_3 "allowlist/exec" '+' "${@}"
+        sydbox_internal_path_3 "allow/exec" '+' "${@}"
         ;;
     disallow_exec)
         [[ ${#} < 1 ]] && die "${FUNCNAME} ${cmd} takes at least one extra argument"
-        sydbox_internal_path_3 "allowlist/exec" '-' "${@}"
+        sydbox_internal_path_3 "allow/exec" '-' "${@}"
         ;;
     deny_exec)
         [[ ${#} < 1 ]] && die "${FUNCNAME} ${cmd} takes at least one extra argument"
-        sydbox_internal_path_3 "denylist/exec" '+' "${@}"
+        sydbox_internal_path_3 "deny/exec" '+' "${@}"
         ;;
     nodeny_exec)
         [[ ${#} < 1 ]] && die "${FUNCNAME} ${cmd} takes at least one extra argument"
-        sydbox_internal_path_3 "denylist/exec" '-' "${@}"
+        sydbox_internal_path_3 "deny/exec" '-' "${@}"
         ;;
     allow_net)
-        local c="allowlist/net/bind"
-        [[ "${1}" == "--connect" ]] && c="allowlist/net/connect" && shift
+        local c="allow/net/bind"
+        [[ "${1}" == "--connect" ]] && c="allow/net/connect" && shift
         [[ ${#} < 1 ]] && die "${FUNCNAME} ${cmd} takes at least one extra argument"
         sydbox_internal_net_3 "${c}" '+' "${@}"
         ;;
     disallow_net)
-        local c="allowlist/net/bind"
-        [[ "${1}" == "--connect" ]] && c="allowlist/net/connect" && shift
+        local c="allow/net/bind"
+        [[ "${1}" == "--connect" ]] && c="allow/net/connect" && shift
         [[ ${#} < 1 ]] && die "${FUNCNAME} ${cmd} takes at least one extra argument"
         sydbox_internal_net_3 "${c}" '-' "${@}"
         ;;
