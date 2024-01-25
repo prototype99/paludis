@@ -149,8 +149,8 @@ esandbox_3()
     check)
         # [[ -e /dev/syd ]]
         # The stat above will not work when SydB☮x is locked, however
-        # --check works regardless of the state of the sandbox lock.
-        sydbox --check
+        # syd-chk works regardless of the state of the sandbox lock.
+        syd-chk
         ;;
     lock)
         [[ -e "/dev/syd/lock:on" ]]
@@ -350,7 +350,7 @@ esandbox_3()
         ;;
     exec)
         [[ ${#} < 1 ]] && die "${FUNCNAME} ${cmd} takes at least one extra argument"
-        [[ -e "$(sydbox exec ${@})" ]]
+        [[ -e "$(syd-exec ${@})" ]]
         ;;
     kill)
         [[ ${#} < 1 ]] && die "${FUNCNAME} ${cmd} takes at least one extra argument"
