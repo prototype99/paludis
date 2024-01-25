@@ -1375,7 +1375,7 @@ namespace
 
     bool check_landlock()
     {
-        bool result(0 == Process(ProcessCommand({ "sh", "-c", "sydbox --landlock >/dev/null 2>/dev/null" })).run().wait());
+        bool result(0 == Process(ProcessCommand({ "sh", "-c", "syd-lock >/dev/null 2>/dev/null" })).run().wait());
         if (! result)
             Log::get_instance()->message("util.system.landlockless", ll_debug, lc_context) <<
                 "I don't seem to be able to use sydbox with LandLock";
@@ -1443,11 +1443,11 @@ Process::sydbox(const std::string & ebuild_phase,
                 // LandLock profile must be the last supplied for it to work.
                 _imp->command.prepend_args({
                     "--profile", "landlock",
-                    "-mallowlist/lock/write+" + builddir,
+                    "-mallow/lock/write+" + builddir,
                 });
             }
             if (can_use_unshare) {
-                // see sydbox --print container for the rules this profile has.
+                // see syd-cat container for the rules this profile has.
                 _imp->command.prepend_args({ "--profile", "container" });
             }
             _imp->command.prepend_args({ "sydbox", "--profile", "paludis" });
