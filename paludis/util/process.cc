@@ -1384,10 +1384,10 @@ namespace
 
     bool check_unshare()
     {
-        bool result(0 == Process(ProcessCommand({ "sh", "-c", "sydbox -ppaludis -pcontainer true 2>/dev/null" })).run().wait());
+        bool result(0 == Process(ProcessCommand({ "sh", "-c", "sydbox -ppaludis -pimmutable true 2>/dev/null" })).run().wait());
         if (! result)
             Log::get_instance()->message("util.system.containerless", ll_debug, lc_context) <<
-                "I don't seem to be able to use sydbox with the container profile";
+                "I don't seem to be able to use sydbox with the immutable container profile";
         return result;
     }
 }
@@ -1447,8 +1447,8 @@ Process::sydbox(const std::string & ebuild_phase,
                 });
             }
             if (can_use_unshare) {
-                // see syd-cat container for the rules this profile has.
-                _imp->command.prepend_args({ "--profile", "container" });
+                // see syd-cat immutable for the rules this profile has.
+                _imp->command.prepend_args({ "--profile", "immutable" });
             }
             _imp->command.prepend_args({ "sydbox", "--profile", "paludis" });
         } else {
