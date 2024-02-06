@@ -1438,7 +1438,7 @@ Process::sydbox(const std::string & ebuild_phase,
                    ebuild_phase.find("test") != std::string::npos) {
             _imp->command.prepend_args({ "--" });
             if (can_use_landlock) {
-                // see sydbox --print landlock for the rules this profile has.
+                // see syd-cat landlock for the rules this profile has.
                 // Careful, we stack Paludis and Landlock profiles and
                 // LandLock profile must be the last supplied for it to work.
                 _imp->command.prepend_args({
