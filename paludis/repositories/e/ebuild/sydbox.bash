@@ -402,6 +402,24 @@ esandbox_1()
     disable|disable_path)
         [[ -e "/dev/sydbox/core/sandbox/write:off" ]]
         ;;
+    enabled_read)
+        false
+        ;;
+    enable_read)
+        : # no-op, only supported for syd[>=3]
+        ;;
+    disable_read)
+        : # no-op, only supported for syd[>=3]
+        ;;
+    enabled_stat)
+        false
+        ;;
+    enable_stat)
+        : # no-op, only supported for syd[>=3]
+        ;;
+    disable_stat)
+        : # no-op, only supported for syd[>=3]
+        ;;
     enabled_exec)
         [[ -e "/dev/sydbox/core/sandbox/exec?" ]]
         ;;
@@ -427,6 +445,38 @@ esandbox_1()
     disallow|disallow_path)
         [[ ${#} < 1 ]] && die "${FUNCNAME} ${cmd} takes at least one extra argument"
         sydbox_internal_path_1 "whitelist/write" '-' "${@}"
+        ;;
+    allow_read)
+        [[ ${#} < 1 ]] && die "${FUNCNAME} ${cmd} takes at least one extra argument"
+        : # no-op, only supported for syd[>=3]
+        ;;
+    disallow_read)
+        [[ ${#} < 1 ]] && die "${FUNCNAME} ${cmd} takes at least one extra argument"
+        : # no-op, only supported for syd[>=3]
+        ;;
+    deny_read)
+        [[ ${#} < 1 ]] && die "${FUNCNAME} ${cmd} takes at least one extra argument"
+        : # no-op, only supported for syd[>=3]
+        ;;
+    nodeny_read)
+        [[ ${#} < 1 ]] && die "${FUNCNAME} ${cmd} takes at least one extra argument"
+        : # no-op, only supported for syd[>=3]
+        ;;
+    allow_stat)
+        [[ ${#} < 1 ]] && die "${FUNCNAME} ${cmd} takes at least one extra argument"
+        : # no-op, only supported for syd[>=3]
+        ;;
+    disallow_stat)
+        [[ ${#} < 1 ]] && die "${FUNCNAME} ${cmd} takes at least one extra argument"
+        : # no-op, only supported for syd[>=3]
+        ;;
+    deny_stat)
+        [[ ${#} < 1 ]] && die "${FUNCNAME} ${cmd} takes at least one extra argument"
+        : # no-op, only supported for syd[>=3]
+        ;;
+    nodeny_stat)
+        [[ ${#} < 1 ]] && die "${FUNCNAME} ${cmd} takes at least one extra argument"
+        : # no-op, only supported for syd[>=3]
         ;;
     allow_exec)
         [[ ${#} < 1 ]] && die "${FUNCNAME} ${cmd} takes at least one extra argument"
