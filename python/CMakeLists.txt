@@ -40,7 +40,7 @@ if(ENABLE_PYTHON)
   target_link_libraries(libpaludispython
                         PRIVATE
                           Boost::python
-                          Python::Python
+                          Python3::Python
                           libpaludis
                           libpaludisutil)
 
@@ -49,7 +49,7 @@ if(ENABLE_PYTHON)
   target_link_libraries(paludis
                         PRIVATE
                           Boost::python
-                          Python::Python
+                          Python3::Python
                           libpaludispython)
   set_target_properties(paludis PROPERTIES
                         OUTPUT_NAME
@@ -66,7 +66,7 @@ if(ENABLE_PYTHON)
   target_link_libraries(libadditionaltests
                         PRIVATE
                           Boost::python
-                          Python::Python
+                          Python3::Python
                           libpaludis
                           libpaludisutil
                           libpaludispython)
@@ -76,7 +76,7 @@ if(ENABLE_PYTHON)
   target_link_libraries(additional_tests
                         PRIVATE
                           Boost::python
-                          Python::Python
+                          Python3::Python
                           libadditionaltests)
   set_target_properties(additional_tests PROPERTIES
                         OUTPUT_NAME

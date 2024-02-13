@@ -228,7 +228,8 @@ if(ENABLE_PYTHON)
                           libpaludis
                           libpaludisutil
                           Boost::python
-                          Python::Python)
+                          Python3::Python
+                       )
 endif()
 
 if(ENABLE_PBINS)

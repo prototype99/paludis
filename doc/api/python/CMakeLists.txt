@@ -18,7 +18,7 @@ if(ENABLE_PYTHON_DOCS)
 
   add_custom_command(COMMAND
                        env PYTHONPATH="${CMAKE_BINARY_DIR}/python"
-                       "${Python_EXECUTABLE}" "${SPHINX_EXECUTABLE}"
+                       "${Python3_EXECUTABLE}" "${SPHINX_EXECUTABLE}"
                          -c "${CMAKE_CURRENT_BINARY_DIR}"
                          -b html
                          -d "${CMAKE_CURRENT_BINARY_DIR}/doctrees"

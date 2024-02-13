@@ -318,22 +318,16 @@ if(ENABLE_PYTHON)
     message(SEND_ERROR "Invalid Python version specified (${PYTHON_VERSION})")
   endif()
 
-  find_package(Python ${PYTHON_VERSION} EXACT COMPONENTS Interpreter Development)
+  find_package(Python3 ${PYTHON_VERSION} EXACT COMPONENTS Interpreter Development)
 
-  if(NOT Python_Interpreter_FOUND)
+  if(NOT Python3_Interpreter_FOUND)
     message(SEND_ERROR "python is required for python support")
   endif()
-  execute_process(COMMAND
-                    "${Python_EXECUTABLE}" -c "from distutils import sysconfig; print(sysconfig.get_python_lib(1))"
-                  OUTPUT_VARIABLE
-                    PALUDIS_PYEXECDIR
-                  ERROR_QUIET
-                  OUTPUT_STRIP_TRAILING_WHITESPACE)
-  get_filename_component(PALUDIS_PYEXECDIR ${PALUDIS_PYEXECDIR} REALPATH)
+  get_filename_component(PALUDIS_PYEXECDIR ${Python3_SITEARCH} REALPATH)
 
   find_package(Boost 1.67.0 REQUIRED
                COMPONENTS
-                 python${PYTHON_VERSION_MAJOR}${PYTHON_VERSION_MINOR})
+                 python${Python3_VERSION_MAJOR}${Python3_VERSION_MINOR})
 
   set(PALUDIS_PYTHON_INSTALL_DIR "${PALUDIS_PYEXECDIR}" CACHE PATH
       "python installation dir")
@@ -343,7 +337,7 @@ if(ENABLE_PYTHON_DOCS)
   find_package(Sphinx REQUIRED)
 
   execute_process(COMMAND
-                    "${Python_EXECUTABLE}" "${SPHINX_EXECUTABLE}" --help
+                    "${Python3_EXECUTABLE}" "${SPHINX_EXECUTABLE}" --help
                   RESULT_VARIABLE
                     exit_code
                   OUTPUT_QUIET
