@@ -377,6 +377,7 @@ ProcessCommand::exec_prepare()
 
         if (!_imp->clearenv ||
             "PALUDIS_" == name.substr(0, 8) ||
+            "SYD_" == name.substr(0, 4) ||
             "PATH" == name ||
             "HOME" == name ||
             "LD_LIBRARY_PATH" == name)
