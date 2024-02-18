@@ -89,12 +89,20 @@ builtin_init()
 
 exheres_internal_init()
 {
+    if [[ -z "${PALUDIS_DO_NOTHING_SANDBOXY}" ]]; then
+        esandbox check 2>/dev/null && esandbox allow "${FETCHEDDIR%/}/***" "${EBUILD}"
+    fi
+
     if hasq "init" ${SKIP_FUNCTIONS} ; then
         ebuild_section "Skipping builtin_init (SKIP_FUNCTIONS)"
     else
         ebuild_section "Starting builtin_init"
         builtin_init
         ebuild_section "Done builtin_init"
+    fi
+
+    if [[ -z "${PALUDIS_DO_NOTHING_SANDBOXY}" ]]; then
+        esandbox check 2>/dev/null && esandbox disallow "${FETCHEDDIR%/}/***" "${EBUILD}"
     fi
 }
 

@@ -31,12 +31,20 @@ builtin_installbin()
 
 generic_internal_installbin()
 {
+    if [[ -z "${PALUDIS_DO_NOTHING_SANDBOXY}" ]]; then
+        esandbox check 2>/dev/null && esandbox allow "${!PALUDIS_BINARY_DISTDIR_VARIABLE}"/${!PALUDIS_ARCHIVES_VAR}
+    fi
+
     if hasq "init" ${SKIP_FUNCTIONS} ; then
         ebuild_section "Skipping builtin_installbin (SKIP_FUNCTIONS)"
     else
         ebuild_section "Starting builtin_installbin"
         builtin_installbin
         ebuild_section "Done builtin_installbin"
+    fi
+
+    if [[ -z "${PALUDIS_DO_NOTHING_SANDBOXY}" ]]; then
+        esandbox check 2>/dev/null && esandbox disallow "${!PALUDIS_BINARY_DISTDIR_VARIABLE}"/${!PALUDIS_ARCHIVES_VAR}
     fi
 }
 
