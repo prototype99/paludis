@@ -1436,7 +1436,8 @@ Process::sydbox(const std::string & ebuild_phase,
         } else if (ebuild_phase.find("prepare") != std::string::npos ||
                     ebuild_phase.find("configure") != std::string::npos ||
                     ebuild_phase.find("compile") != std::string::npos ||
-                   ebuild_phase.find("test") != std::string::npos) {
+                    ebuild_phase.find("test") != std::string::npos ||
+                    ebuild_phase.find("install") != std::string::npos) {
             _imp->command.prepend_args({ "--" });
             if (can_use_landlock) {
                 // see syd-cat landlock for the rules this profile has.
