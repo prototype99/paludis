@@ -698,6 +698,7 @@ ebuild_main()
             # Ban execve() calls if we're running under sandbox
             if esandbox check 2>/dev/null; then
                 esandbox enable_exec || ebuild_notice "warning" "esandbox enable_exec returned failure"
+                esandbox allow "${EBUILD}"
             else
                 for f in cut tr date ; do
                     eval "${f}() { ebuild_notice qa 'global scope ${f}' ; $(type -P ${f} ) \"\$@\" ; }"
@@ -713,6 +714,7 @@ ebuild_main()
             # Unban execve() calls if we're running under sandbox
             if esandbox check 2>/dev/null; then
                 esandbox disable_exec || ebuild_notice "warning" "esandbox disable_exec returned failure"
+                esandbox disallow "${EBUILD}"
             fi
         fi
 
