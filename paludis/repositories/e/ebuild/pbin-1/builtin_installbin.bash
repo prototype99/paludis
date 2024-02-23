@@ -18,6 +18,10 @@
 
 builtin_installbin()
 {
+    if [[ -z "${PALUDIS_DO_NOTHING_SANDBOXY}" ]]; then
+        esandbox check 2>/dev/null && esandbox allow "${!PALUDIS_BINARY_DISTDIR_VARIABLE}"/${!PALUDIS_ARCHIVES_VAR}
+    fi
+
     if [[ ${!PALUDIS_ARCHIVES_VAR%.tar.bz2} != ${!PALUDIS_ARCHIVES_VAR} ]] ; then
         echo tar jvxpf "${!PALUDIS_BINARY_DISTDIR_VARIABLE}"/${!PALUDIS_ARCHIVES_VAR} -C "${!PALUDIS_IMAGE_DIR_VAR}"/ --exclude PBIN 1>&2
         tar jvxpf "${!PALUDIS_BINARY_DISTDIR_VARIABLE}"/${!PALUDIS_ARCHIVES_VAR} -C "${!PALUDIS_IMAGE_DIR_VAR}"/ --exclude PBIN || die "Couldn't extract image"
@@ -27,24 +31,20 @@ builtin_installbin()
     else
         die "Unrecognised extension for '${!PALUDIS_ARCHIVES_VAR}'"
     fi
+
+    if [[ -z "${PALUDIS_DO_NOTHING_SANDBOXY}" ]]; then
+        esandbox check 2>/dev/null && esandbox disallow "${!PALUDIS_BINARY_DISTDIR_VARIABLE}"/${!PALUDIS_ARCHIVES_VAR}
+    fi
 }
 
 generic_internal_installbin()
 {
-    if [[ -z "${PALUDIS_DO_NOTHING_SANDBOXY}" ]]; then
-        esandbox check 2>/dev/null && esandbox allow "${!PALUDIS_BINARY_DISTDIR_VARIABLE}"/${!PALUDIS_ARCHIVES_VAR}
-    fi
-
     if hasq "init" ${SKIP_FUNCTIONS} ; then
         ebuild_section "Skipping builtin_installbin (SKIP_FUNCTIONS)"
     else
         ebuild_section "Starting builtin_installbin"
         builtin_installbin
         ebuild_section "Done builtin_installbin"
-    fi
-
-    if [[ -z "${PALUDIS_DO_NOTHING_SANDBOXY}" ]]; then
-        esandbox check 2>/dev/null && esandbox disallow "${!PALUDIS_BINARY_DISTDIR_VARIABLE}"/${!PALUDIS_ARCHIVES_VAR}
     fi
 }
 

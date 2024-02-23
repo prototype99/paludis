@@ -402,11 +402,19 @@ ebuild_load_ebuild()
     local paludis_shopts=$(shopt -p)
     [[ -n ${PALUDIS_SHELL_OPTIONS_GLOBAL} ]] && shopt -s ${PALUDIS_SHELL_OPTIONS_GLOBAL}
 
+    if [[ -z "${PALUDIS_DO_NOTHING_SANDBOXY}" ]]; then
+        esandbox check 2>/dev/null && esandbox allow "${EBUILD}"
+    fi
+
     if [[ ! -f ${1} ]]; then
         [[ -r ${1} ]] || die "Ebuild '${1}' cannot be read"
         die "Ebuild '${1}' is not a file"
     fi
     source ${1} || die "Error sourcing ebuild '${1}'"
+
+    if [[ -z "${PALUDIS_DO_NOTHING_SANDBOXY}" ]]; then
+        esandbox check 2>/dev/null && esandbox disallow "${EBUILD}"
+    fi
 
     eval "${paludis_shopts}"
 
@@ -698,7 +706,6 @@ ebuild_main()
             # Ban execve() calls if we're running under sandbox
             if esandbox check 2>/dev/null; then
                 esandbox enable_exec || ebuild_notice "warning" "esandbox enable_exec returned failure"
-                esandbox allow "${EBUILD}"
             else
                 for f in cut tr date ; do
                     eval "${f}() { ebuild_notice qa 'global scope ${f}' ; $(type -P ${f} ) \"\$@\" ; }"
@@ -714,7 +721,6 @@ ebuild_main()
             # Unban execve() calls if we're running under sandbox
             if esandbox check 2>/dev/null; then
                 esandbox disable_exec || ebuild_notice "warning" "esandbox disable_exec returned failure"
-                esandbox disallow "${EBUILD}"
             fi
         fi
 
