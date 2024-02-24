@@ -27,6 +27,8 @@ stages:
 .build-template: &build-template
   stage: build
   image: paludis/${DISTRIBUTION}-${COMPILER}:${VERSION}
+  tags:
+    - x86_64
   script:
     - *build-script
     - ctest -V
