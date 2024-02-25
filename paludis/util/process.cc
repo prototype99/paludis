@@ -1448,11 +1448,16 @@ Process::sydbox(const std::string & ebuild_phase,
                     "-mallow/lock/write+" + builddir,
                 });
             }
-            if (can_use_unshare && ebuild_phase.find("install") == std::string::npos) {
-                // see syd-cat immutable for the rules this profile has.
-                // note install runs as root:root as we can't use this profile,
-                // however we still use landlock for install phase.
-                _imp->command.prepend_args({ "--profile", "immutable" });
+            if (ebuild_phase.find("install") == std::string::npos) {
+                if (can_use_unshare) {
+                    // see syd-cat immutable for the rules this profile has.
+                    // note install runs as root:root as we can't use this profile,
+                    // however we still use landlock for install phase.
+                    _imp->command.prepend_args({ "--profile", "immutable" });
+                }
+            } else {
+                // install runs as root:root and we do not want to drop capabilities.
+                _imp->command.prepend_args({ "-mtrace/allow_unsafe_caps:1" });
             }
             _imp->command.prepend_args({ "sydbox", "--profile", "paludis" });
         } else {
