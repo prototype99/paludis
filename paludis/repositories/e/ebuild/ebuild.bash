@@ -403,7 +403,7 @@ ebuild_load_ebuild()
     [[ -n ${PALUDIS_SHELL_OPTIONS_GLOBAL} ]] && shopt -s ${PALUDIS_SHELL_OPTIONS_GLOBAL}
 
     if [[ -z "${PALUDIS_DO_NOTHING_SANDBOXY}" ]]; then
-        esandbox check 2>/dev/null && esandbox allow "${EBUILD}"
+        esandbox check 2>/dev/null && esandbox allow "${1}"
     fi
 
     if [[ ! -f ${1} ]]; then
@@ -413,7 +413,7 @@ ebuild_load_ebuild()
     source ${1} || die "Error sourcing ebuild '${1}'"
 
     if [[ -z "${PALUDIS_DO_NOTHING_SANDBOXY}" ]]; then
-        esandbox check 2>/dev/null && esandbox disallow "${EBUILD}"
+        esandbox check 2>/dev/null && esandbox disallow "${1}"
     fi
 
     eval "${paludis_shopts}"
