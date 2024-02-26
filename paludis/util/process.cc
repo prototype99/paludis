@@ -1457,7 +1457,7 @@ Process::sydbox(const std::string & ebuild_phase,
                 }
             } else {
                 // install runs as root:root and we do not want to drop capabilities.
-                _imp->command.prepend_args({ "-mtrace/allow_unsafe_caps:1" });
+                _imp->command.prepend_args({ "--profile", "privileged" });
             }
             _imp->command.prepend_args({ "sydbox", "--profile", "paludis" });
         } else {
