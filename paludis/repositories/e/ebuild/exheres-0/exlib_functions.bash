@@ -176,8 +176,15 @@ require()
     for e in ${exlibs}; do
         location=
         for ee in ${EXLIBSDIRS} ; do
+            if [[ -z "${PALUDIS_DO_NOTHING_SANDBOXY}" ]]; then
+                esandbox check 2>/dev/null && esandbox allow "${ee%/}/${e}.exlib"
+            fi
             [[ -f "${ee}/${e}.exlib" ]] && location="${ee}/${e}.exlib"
+            if [[ -z "${PALUDIS_DO_NOTHING_SANDBOXY}" ]]; then
+                esandbox check 2>/dev/null && esandbox disallow "${ee%/}/${e}.exlib"
+            fi
         done
+
         local old_CURRENT_EXLIB="${CURRENT_EXLIB}"
         export CURRENT_EXLIB="${e}"
         local old_PALUDIS_CHECK_EXPORTED_PHASES="${PALUDIS_CHECK_EXPORTED_PHASES}"
@@ -198,8 +205,17 @@ require()
             export -n ${u_v}="${!v-unset}"
         done
 
+        if [[ -z "${PALUDIS_DO_NOTHING_SANDBOXY}" ]]; then
+          esandbox check 2>/dev/null && esandbox allow "${location}"
+        fi
+
         [[ -z "${location}" ]] && die "Error finding exlib ${e} in ${EXLIBSDIRS}"
         source "${location}" || die "Error sourcing exlib ${e}"
+
+        if [[ -z "${PALUDIS_DO_NOTHING_SANDBOXY}" ]]; then
+          esandbox check 2>/dev/null && esandbox disallow "${location}"
+        fi
+
         hasq "${CURRENT_EXLIB}" ${INHERITED} || export INHERITED="${INHERITED} ${CURRENT_EXLIB}"
 
         local f e_f
