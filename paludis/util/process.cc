@@ -1374,6 +1374,15 @@ namespace
         return result;
     }
 
+    bool check_sydbox_v3()
+    {
+        bool result(0 == Process(ProcessCommand({ "sh", "-c", "sydbox --version | grep -q v3 2>/dev/null" })).run().wait());
+        if (! result)
+            Log::get_instance()->message("util.system.boxless", ll_warning, lc_context) <<
+                "I don't seem to be able to determine sydbox version";
+        return result;
+    }
+
     bool check_landlock()
     {
         bool result(0 == Process(ProcessCommand({ "sh", "-c", "syd-lock >/dev/null 2>/dev/null" })).run().wait());
@@ -1422,6 +1431,7 @@ Process::sydbox(const std::string & ebuild_phase,
                 const std::string & builddir)
 {
     static bool can_use_sydbox(check_cmd("sydbox"));
+    static bool can_use_sydbox_v3(check_sydbox_v3());
     static bool can_use_landlock(check_landlock());
     static bool can_use_unshare(check_unshare());
 
@@ -1455,7 +1465,7 @@ Process::sydbox(const std::string & ebuild_phase,
                     // however we still use landlock for install phase.
                     _imp->command.prepend_args({ "--profile", "immutable" });
                 }
-            } else {
+            } else if (can_use_sydbox_v3) {
                 // install runs as root:root and we do not want to drop capabilities.
                 _imp->command.prepend_args({ "--profile", "privileged" });
             }
@@ -1466,10 +1476,14 @@ Process::sydbox(const std::string & ebuild_phase,
                    ebuild_phase.find("postrm") != std::string::npos ||
                    ebuild_phase.find("postinst") != std::string::npos ||
                    ebuild_phase.find("config") != std::string::npos) {
-            // These phases run as root:root and we do not want to drop capabilities.
-            // Note, install was handle in the block above where we also add landlock.
-            // However, pkg_* functions run without landlock, they can write to /.
-            _imp->command.prepend_args({ "sydbox", "--profile", "paludis", "--profile", "privileged", "--" });
+            _imp->command.prepend_args({ "--" });
+            if (can_use_sydbox_v3) {
+                // These phases run as root:root and we do not want to drop capabilities.
+                // Note, install was handled in the block above where we also add landlock.
+                // However, pkg_* functions run without landlock, they can write to /.
+                _imp->command.prepend_args({ "--profile", "privileged" });
+            }
+            _imp->command.prepend_args({ "sydbox", "--profile", "paludis" });
         } else {
             // Things like metadata fall here.
             // TODO: Do we want more restrictions here?
