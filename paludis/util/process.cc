@@ -1376,10 +1376,10 @@ namespace
 
     bool check_sydbox_v3()
     {
-        bool result(0 == Process(ProcessCommand({ "sh", "-c", "sydbox --version | grep -q v3 2>/dev/null" })).run().wait());
+        bool result(0 == Process(ProcessCommand({ "sh", "-c", "sydbox --version | grep -q 'syd.* 3\\.' 2>/dev/null" })).run().wait());
         if (! result)
-            Log::get_instance()->message("util.system.boxless", ll_warning, lc_context) <<
-                "I don't seem to be able to determine sydbox version";
+            Log::get_instance()->message("util.system.boxless", ll_debug, lc_context) <<
+                "I don't seem to be able to use sydbox 3";
         return result;
     }
 
