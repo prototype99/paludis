@@ -4,17 +4,12 @@ MAINTAINER Heiko Becker <heirecka@exherbo.org>
 # Build generic binaries
 COPY ./config/bashrc /etc/paludis/bashrc
 
-# Switch to option.conf.d layout
-RUN mkdir /etc/paludis/options.conf.d \
-    && mv /etc/paludis/options.conf /etc/paludis/options.conf.d/10_clang.conf
-
 COPY ./config/options/* /etc/paludis/options.conf.d/
 COPY ./config/sets/paludis-deps.conf /etc/paludis/sets/
 
 RUN chgrp tty /dev/tty \
     && eclectic env update \
     && source /etc/profile \
-    && cave resolve -1z repository/{media,net,pyro,rust,scientific} -x \
     && cave resolve \
             --execute \
             --preserve-world \
