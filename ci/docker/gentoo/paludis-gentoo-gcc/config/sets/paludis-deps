@@ -1,5 +1,5 @@
-app-doc/doxygen
 app-text/asciidoc
+app-text/doxygen
 app-text/htmltidy
 app-text/xmlto
 dev-python/sphinx
@@ -14,4 +14,4 @@ app-arch/libarchive
 
 dev-db/sqlite:3
 
-dev-util/ninja
+dev-build/ninja
