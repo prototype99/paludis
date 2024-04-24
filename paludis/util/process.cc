@@ -1385,7 +1385,7 @@ namespace
 
     bool check_landlock()
     {
-        bool result(0 == Process(ProcessCommand({ "sh", "-c", "syd-lock >/dev/null 2>/dev/null" })).run().wait());
+        bool result(0 == Process(ProcessCommand({ "sh", "-c", "syd-lock -c >/dev/null 2>/dev/null" })).run().wait());
         if (! result)
             Log::get_instance()->message("util.system.landlockless", ll_debug, lc_context) <<
                 "I don't seem to be able to use sydbox with LandLock";
