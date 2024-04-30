@@ -122,7 +122,9 @@ namespace paludis
 
             Process & sandbox();
             Process & sydbox(const std::string &,
-                             const std::string &);
+                             const std::string &,
+                             const uid_t,
+                             const gid_t);
 
             /* NOTE: Do not use this functionality together with a
              *       multi-threaded process. Not only will all but the

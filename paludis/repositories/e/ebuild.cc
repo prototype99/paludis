@@ -130,7 +130,13 @@ EbuildCommand::operator() ()
     if (params.sydbox()) {
         std::string phaseCommands = commands();
         std::string builddir = stringify(params.builddir());
-        process.sydbox(phaseCommands, builddir);
+        if (params.userpriv()) {
+            uid_t reduced_uid = params.environment()->reduced_uid();
+            gid_t reduced_gid = params.environment()->reduced_gid();
+            process.sydbox(phaseCommands, builddir, reduced_uid, reduced_gid);
+        } else {
+            process.sydbox(phaseCommands, builddir, 0, 0);
+        }
     } else if (params.sandbox()) {
         process.sandbox();
     }

@@ -1392,9 +1392,14 @@ namespace
         return result;
     }
 
-    bool check_unshare()
+    bool check_unshare(const uid_t reduced_uid, const gid_t reduced_gid)
     {
-        bool result(0 == Process(ProcessCommand({ "sh", "-c", "sydbox -ppaludis -pimmutable true 2>/dev/null" })).run().wait());
+        // We have to change user when checking for namespaces,
+        // or this will not work under a kernel with
+        // CONFIG_USER_NS=y but CONFIG_USER_NS_UNPRIVILEGED=n.
+        bool result(
+            0 == Process(ProcessCommand({ "sh", "-c", "sydbox -ppaludis -pimmutable true 2>/dev/null" }))
+                .setuid_setgid(reduced_uid, reduced_gid).run().wait());
         if (! result)
             Log::get_instance()->message("util.system.containerless", ll_debug, lc_context) <<
                 "I don't seem to be able to use sydbox with the immutable container profile";
@@ -1428,12 +1433,14 @@ Process::sandbox()
 
 Process &
 Process::sydbox(const std::string & ebuild_phase,
-                const std::string & builddir)
+                const std::string & builddir,
+                uid_t reduced_uid,
+                gid_t reduced_gid)
 {
     static bool can_use_sydbox(check_cmd("sydbox"));
     static bool can_use_sydbox_v3(check_sydbox_v3());
     static bool can_use_landlock(check_landlock());
-    static bool can_use_unshare(check_unshare());
+    static bool can_use_unshare(check_unshare(reduced_uid, reduced_gid));
 
     if (can_use_sydbox)
     {
