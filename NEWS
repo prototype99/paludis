@@ -4,6 +4,20 @@ News for Paludis
 This file lists the major changes between versions. For a more detailed list
 of every change, see the Git log.
 
+3.0.1:
+    * Allow unpacking zst and tar.zst archives
+
+    * Replace prcecpp with std::regex (which means ECMAScript syntax for
+    regular expressions instead of Perl's syntax - the former is based on the
+    latter though)
+
+    * Support for sydbox API 3 (https://sydbox.exherbolinux.org)
+
+    * Add support for Ruby 3.2 and 3.3 (and drop support for 2.6 and 2.7,
+    which reached their EOL)
+
+    * Add support for Python 3.12
+
 3.0.0:
     * Support for multiarch and cross compiled packages
 
