@@ -33,6 +33,9 @@ files.</p>
 
 <h2>Reference Configurations</h2>
 
+<!--
+As far as I know there's no layman repo anymore, certainly not at the URL below, so comment this
+out for the moment.
 <h3>Gentoo</h3>
 
 <p>The following makes <code>layman</code> repositories available:</p>
@@ -44,6 +47,7 @@ location = /var/db/paludis/repositories/layman
 sync = tar+http://git.exherbo.org/layman_repositories.tar.bz2
 importance = -100
 </pre>
+-->
 
 <h3>Exherbo</h3>
 
