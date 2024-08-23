@@ -46,7 +46,7 @@ exheres_internal_nofetch()
     local old_sandbox_write="${SANDBOX_WRITE}"
     if [[ -z "${PALUDIS_DO_NOTHING_SANDBOXY}" ]]; then
         SANDBOX_WRITE="${SANDBOX_WRITE+${SANDBOX_WRITE}:}${FETCHEDDIR}"
-        esandbox check 2>/dev/null && esandbox allow "${FETCHEDDIR:%/}/***"
+        esandbox check 2>/dev/null && esandbox allow "${FETCHEDDIR%/}/***"
     fi
 
     if hasq "nofetch" ${SKIP_FUNCTIONS} ; then
