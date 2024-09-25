@@ -1439,8 +1439,10 @@ Process::sydbox(const std::string & ebuild_phase,
 {
     static bool can_use_sydbox(check_cmd("sydbox"));
     static bool can_use_sydbox_v3(check_sydbox_v3());
-    static bool can_use_landlock(check_landlock());
-    static bool can_use_unshare(check_unshare(reduced_uid, reduced_gid));
+    static bool can_use_landlock(can_use_sydbox_v3 &&
+                                 check_landlock());
+    static bool can_use_unshare(can_use_sydbox_v3 &&
+                                check_unshare(reduced_uid, reduced_gid));
 
     if (can_use_sydbox)
     {
