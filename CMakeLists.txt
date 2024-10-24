@@ -54,8 +54,8 @@ endif()
 set(PALUDIS_VIM_INSTALL_DIR "${CMAKE_INSTALL_FULL_DATADIR}/vim/vimfiles" CACHE PATH
     "vim installation directory")
 
-set(PYTHON_SUPPORTED_VERSIONS 3.6 3.7 3.8 3.9 3.10 3.11 3.12)
-set(PYTHON_VERSION "3.11" CACHE STRING
+set(PYTHON_SUPPORTED_VERSIONS 3.8 3.9 3.10 3.11 3.12 3.13)
+set(PYTHON_VERSION "3.12" CACHE STRING
   "Python version (${PYTHON_SUPPORTED_VERSIONS}) (requires corresponding Boost.Python as well)")
 
 set(RUBY_SUPPORTED_VERSIONS 3.1 3.2 3.3)
