@@ -325,7 +325,11 @@ if(ENABLE_PYTHON)
   endif()
   get_filename_component(PALUDIS_PYEXECDIR ${Python3_SITEARCH} REALPATH)
 
-  find_package(Boost 1.67.0 REQUIRED
+  # Use BoostConfig.cmake if possible
+  if(POLICY CMP0167)
+    set(BOOST_CONFIG "CONFIG")
+  endif()
+  find_package(Boost ${BOOST_CONFIG} 1.67.0 REQUIRED
                COMPONENTS
                  python${Python3_VERSION_MAJOR}${Python3_VERSION_MINOR})
 
