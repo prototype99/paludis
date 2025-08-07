@@ -66,7 +66,7 @@ ebuild_sanitise_envvars()
 
     unset GZIP BZIP BZIP2 CDPATH GREP_OPTIONS GREP_COLOR GLOBIGNORE
     unset LANG ${!LC_*}
-    export LC_ALL=C.UTF8
+    export LC_ALL=C.UTF-8
 
     # Some EAPIs support a dynamic, profile-provided list of environment
     # variables to unset, use that if sanctioned.
