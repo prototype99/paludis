@@ -17,7 +17,7 @@ class ExampleCommandLine:
 
         (options, args) = parser.parse_args()
 
-        print options.log_level
+        print(f"{options.log_level}")
         if options.log_level:
             paludis.Log.instance.log_level = getattr(paludis.LogLevel, options.log_level.upper())
 

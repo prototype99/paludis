@@ -5,8 +5,11 @@
 
 import paludis
 
-print("Built using Paludis " + str(paludis.VERSION_MAJOR) + "." + str(paludis.VERSION_MINOR) +
-        "." + str(paludis.VERSION_MICRO) + paludis.VERSION_SUFFIX),
+print(f"Built using Paludis "
+      f"{paludis.VERSION_MAJOR}."
+      f"{paludis.VERSION_MINOR}."
+      f"{paludis.VERSION_MICRO}{paludis.VERSION_SUFFIX}"
+      )
 
 if paludis.GIT_HEAD:
-    print 'git-' + paludis.GIT_HEAD
+    print(f"git-{paludis.GIT_HEAD}")
