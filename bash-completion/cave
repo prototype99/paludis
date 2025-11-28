@@ -11,14 +11,17 @@ __cave_find_cmd() {
     for (( c=1; c < COMP_CWORD; c++ )) ; do
         w="${COMP_WORDS[c]}"
         case "${w}" in
-            --*) ;;
             --help|-h) cmd="help"; break ;;
-            config|@(display|execute)-resolution|help|import|perform|print-@(categories|commands|environment-metadata|id-@(contents|executables|metadata)|ids|owners|packages|repositor@(ies|y-formats)|sets|sync-protocols)|resolve|show|sync|update-world) cmd="${w}"; break ;;
+            --*) ;;
+            @(best|has)-version|config|contents|digest|@(display|execute)-resolution|dump-cave-formats-conf|executables|find-candidates|fix-@(cache|linkage)|generate-metadata|graph-jobs|help|import|info|manage-search-index|match|mirror|owner|perform|print-@(categories|checksum?(-algorithms)|commands|?(dependent-)ids|environment-metadata|id-@(actions|contents|environment-variable|executables|masks|metadata|size)|owners|packages|repositor@(ies|y-@(formats|metadata))|resolution-required-confirmations|set|sets|spec|sync-protocols|unmanaged-files|unused-distfiles)|purge|report|resolve|resume|search|show|size|sync|sync-protocol-options|uninstall|update-world|verify)
+            cmd="${w}"; break ;;
         esac
     done
 
     echo "${cmd}"
 }
+
+
 
 __cave_enum_value() {
     local w c v enum="${1}"
@@ -34,19 +37,22 @@ __cave_enum_value() {
 }
 
 __cave_compgen() {
-    COMPREPLY=( $(compgen -W "$*" -- "${cur}") )
+    readarray -t COMPREPLY < <(compgen -W "$*" -- "${cur}")
 }
 
 __cave_global() {
     case "${prev}" in
-        --log-level)
+        --log-level|-L)
             __cave_compgen "debug qa warning silent"
             ;;
         --environment|-E)
             __cave_compgen "paludis: portage:"
             ;;
+        --colour|-c)
+            __cave_compgen "auto yes no"
+            ;;
         *)
-            __cave_compgen "$(cave print-commands -a) -E --environment --log-level"
+            __cave_compgen "$(cave print-commands -a) -E --environment -L --log-level -c --colour -h --help -v --version"
             ;;
     esac
 }
@@ -59,11 +65,29 @@ __cave_help() {
 }
 
 __cave_sync() {
-    __cave_compgen "$(cave print-repositories) --sequential -h --help"
+    __cave_compgen "$(cave print-repositories) --sequential -h --help -s --source -r --revision"
 }
 
-__cave_show() {
-    local type="$(__cave_enum_value '--type|-t')"
+__cave_show_options="
+        --help
+        -t --type
+        -n --no-keys +n --no-no-keys
+        -c --complex-keys +c --no-complex-keys
+        -i --internal-keys +i --no-internal-keys
+        -s --significant-keys-only +s --no-significant-keys-only
+        -k --key
+        -d --description-keys +d --no-description-keys
+        -f --flat +f --no-flat
+        -r --raw-names +r --no-raw-names
+        -1 --one-version +1 --no-one-version
+        -a --all-versions +a --no-all-versions
+        -0 --no-versions +0 --no-no-versions
+        -R --repository-at-a-time +R --no-repository-at-a-time
+"
+
+__cave_show() { # TODO
+    local type
+    type="$(__cave_enum_value '--type|-t')"
     case "${prev}" in
         --type|-t)
             __cave_compgen "auto repository set wildcard package"
@@ -71,7 +95,7 @@ __cave_show() {
         *)
             case "${cur}" in
                 -*)
-                    __cave_compgen "--type -t --complex-keys -c --internal-keys -i --flat -f --raw-names -r --help"
+                    __cave_compgen  "${__cave_show_options}"
                     ;;
                 *)
                     case "${type}" in
@@ -103,16 +127,24 @@ __cave_resolve_options="-h --help
         -U --permit-uninstall
         -d --permit-downgrade
         -o --permit-old-version
+        -P --purge
+        --no-override-masks --no-no-override-masks
+        --no-override-flags --no-no-override-flags
+        --no-restarts-for
+        --promote-binaries
+        -u --uninstalls-may-break
+        -r --remove-if-dependent
+        -l --less-restrictive-remove-blockers
+        -D --reinstall-dependents-of
         -K --keep-targets
         -k --keep
         -R --reinstall-scm
-        -D --reinstall-dependents-of
         -w --with
         -W --without
         -S --target-slots
         -s --slots
-        -B --follow-installed-build-dependencies --no-follow-installed-build-dependencies
-        -n --no-follow-installed-dependencies --no-no-follow-installed-dependencies
+        -B --follow-installed-build-dependencies +B --no-follow-installed-build-dependencies
+        -n --no-follow-installed-dependencies +n --no-no-follow-installed-dependencies
         -0 --no-dependencies-from
         -! --no-blockers-from
         --suggestions
@@ -122,16 +154,30 @@ __cave_resolve_options="-h --help
         -i --ignore
         -I --ignore-from
         -F --favour
+        --favour-matching
         -A --avoid
+        --avoid-matching
         -p --preset
-        -b --create-binaries
-        -/ --install-to-root --no-install-to-root
-        -2 --chroot-path
+        -H --hide
+        -N --not-usable
+        -E --early
+        -L --late
+        -m --make
         -4 --cross-host
+        -M --make-dependencies
+        -b --via-binaries
+        -/ --dependencies-to-slash
+        --one-binary-per-slot --no-one-binary-per-slot
+        -2 --chroot-path
+        --ignore-unable-decisions --no-ignore-unable-decisions
+        --ignore-unorderable-jobs --no-ignore-unorderable-jobs
         --dump --no-dump
         --dump-restarts --no-dump-restarts
-        -1 --preserve-world --no-preserve-world
+        -1 --preserve-world +1 --no-preserve-world
         -C --continue-on-failure
+        --resume-file --no-resume-file
+        -f --fetch +f --no-fetch
+        -J --fetch-jobs
         --skip-phase
         --abort-at-phase
         --skip-until-phase
@@ -139,25 +185,34 @@ __cave_resolve_options="-h --help
         --show-option-descriptions
         --show-descriptions
         -X --explain
-        --show-all-jobs --no-show-all-jobs
+        --graph-jobs-basename
+        --graph-jobs-format
+        --graph-jobs-all-arrows --no-graph-jobs-all-arrows
+        --graph-jobs-full-names --no-graph-jobs-full-names
         --display-resolution-program
+        --graph-jobs-resolution-program
         --execute-resolution-program
         --perform-program
-        --update-world-program"
+        --update-world-program
+        --graph-program
+"
 
 __cave_resolve() {
     case "${prev}" in
+        --promote-binaries)
+            __cave_compgen "never if-same"
+            ;;
         -K|--keep-targets)
-            __cave_compgen "auto never if-transient if-same if-same-version if-possible"
+            __cave_compgen "auto never if-transient if-same-metadata if-same if-same-version if-possible"
             ;;
         -k|--keep)
-            __cave_compgen "never if-transient if-same if-same-version if-possible"
+            __cave_compgen "never if-transient if-same-metadata if-same if-same-version if-possible"
             ;;
         -R|--reinstall-scm)
             __cave_compgen "always daily weekly never"
             ;;
-        -w|--with|-W|--without)
-            __cave_compgen "$(cave print-packages)"
+        -[wWtTiIFApHNELbX]|--@(with|without|@(take|ignore)?(-from)|@(favour|avoid)?(-matching)|preset|hide|not-usable|early|late|via-binary|explain))
+            __cave_compgen "$(cave print-packages)" # cave print-sets
             ;;
         -S|--target-slots|-s|--slots)
             __cave_compgen "best-or-installed installed-or-best all best"
@@ -165,11 +220,26 @@ __cave_resolve() {
         --suggestions|--recommendations)
             __cave_compgen "ignore display take"
             ;;
+        -m|--make)
+            __cave_compgen "auto install binaries chroot cross-compile"
+            ;;
+        -M|--make-dependencies)
+           __cave_compgen "auto runtime all none"
+           ;;
+        -/|--dependencies-to-slash)
+           __cave_compgen "auto runtime build none"
+           ;;
         -C|--continue-on-failure)
             __cave_compgen "never if-satisfied if-independent always"
             ;;
+        -2|--chroot-path)
+            _filedir
+            ;;
+        --resume-file)
+            _filedir
+            ;;
         --change-phases-for)
-            __cave_compgen "all first last"
+            __cave_compgen "all first !first last !last targets !targets"
             ;;
         --show-option-descriptions)
             __cave_compgen "none new changed all"
@@ -180,11 +250,11 @@ __cave_resolve() {
         --skip-phase|--abort-at-phase|--skip-until-phase)
             __cave_compgen "fetch_extra killold init setup unpack prepare configure compile test test_expensive install strip preinst merge prerm postrm postinst tidyup"
             ;;
-        -[UdawW0!tTiIFApBX]|--@(permit-@(uninstall|downgrade|any-version)|with?(out)|no-@(dependencies|blockers)-from|@(take|ignore)?(-from)|favor|avoid|preset|no-binaries-for|explain))
+        -[UdawW0!tTiI]|--@(permit-@(uninstall|downgrade|any-version)|with?(out)|no-@(dependencies|blockers)-from))
             # TODO: better completion here
-            COMPREPLY=()
+            COMPREPLY=(  )
             ;;
-        --@(@(display|execute)-resolution|perform|update-world)-program)
+        --@(@(display|graph-jobs|execute)-resolution|perform|update-world|graph)-program)
             _filedir
             ;;
         *)
@@ -206,10 +276,15 @@ __cave_import_options="${__cave_resolve_options}
     -l --location
     -u --install-under
     -r --rewrite-uids-over-to-root
+    -s --strip
+    -p --preserve-work
     -D --description
-    -B --build-dependency
-    -R --run-dependency
-    -P --preserve-metadata"
+    -B --build-dependency-target
+    -b --build-dependency-host
+    -R --run-dependency-target
+    -I --run-dependency-host
+    -P --preserve-metadata +P --no-preserve-metadata
+"
 
 __cave_import() {
     case "${prev}" in
@@ -219,10 +294,13 @@ __cave_import() {
         -r|--rewrite-uids-over-to-root)
             _uids
             ;;
+        -[sp]|--@(strip|preserve-work))
+            __cave_compgen "config always never"
+            ;;
         -D|--description)
             COMPREPLY=()
             ;;
-        -B|--build-dependency|-R|--run-dependency|-P|--preserve-metadata)
+        -[BbRIP]|--@(build|run)-dependency-@(target|host)|--preserve-metadata)
             __cave_compgen "$(cave print-packages)"
             ;;
         -*)
@@ -246,7 +324,10 @@ __cave_import() {
 }
 
 _cave() {
-    local cmd=`__cave_find_cmd` prev=`_get_pword 2>/dev/null || echo ${COMP_WORDS[COMP_CWORD-1]}` cur=`_get_cword`
+    local cmd prev cur
+    cmd=$(__cave_find_cmd)
+    prev=$(_get_pword 2>/dev/null || echo "${COMP_WORDS[COMP_CWORD-1]}")
+    cur=$(_get_cword)
 
     COMPREPLY=()
 
