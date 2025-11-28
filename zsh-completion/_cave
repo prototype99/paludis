@@ -691,7 +691,7 @@ _cave_cmd_report()
     '(--help -h)'{--help,-h}'[Display help messsage]'
 }
 
-_cave_resolve_arguments=(
+_cave_resolve_arguments=( # {{{
     '(--help -h)'{--help,-h}'[Display help messsage]' \
     '(--execute -x --no-execute +x)'{--execute,-x,--no-execute,+x}'[Execute the suggested actions]' \
     '(--lazy -z --complete -c --everything -e --no-lazy +z --no-complete +c --no-everything +e)'{--lazy,-z,--no-lazy,+z}'[Do as little work as possible]' \
@@ -765,7 +765,7 @@ _cave_resolve_arguments=(
     '--perform-program[The program used to perform actions]:Command: ' \
     '--update-world-program[The program used to perform world updates]:Command: ' \
     '--graph-program[The program used to create Graphviz graphs]:Command: '
-)
+) # }}}
 
 (( ${+functions[_cave_cmd_purge]} )) ||
 _cave_cmd_purge()
