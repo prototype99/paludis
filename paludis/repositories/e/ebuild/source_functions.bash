@@ -82,9 +82,11 @@ ebuild_safe_source()
     #
     # Eventually, we might also want to include the "typeset" builtin, which is an alias for
     # "declare".
+#               \${ : 'Skip over \"declare\" and options';};
+#           [[ \${varname} == ?(*[[:space:]])!(${ local IFS='|'; shift; echo "${*}"; }) ||
     trap "varname=\"\${BASH_COMMAND%%=*}\";
           [[ \${varname%%[[:space:]]*} == 'declare' ]] && {
-              \$(: 'Skip over \"declare\" and options');
+              :;
               varname=\"\${varname##*[[:space:]]}\";
           };
           [[ \${varname} == ?(*[[:space:]])!($(IFS='|'; shift; echo "${*}")) ||
